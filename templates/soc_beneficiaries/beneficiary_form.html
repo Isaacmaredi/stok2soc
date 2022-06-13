@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}| Add Member{% endblock title %}
+
+{% block content %}
+
+  <!-- page content -->
+  <div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Add Beneficiary</h3>
+            </div>
+
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Create a new beneficiary <small>- please note the mandatory fields</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a class="dropdown-item" href="#">Settings 1</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Settings 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form method="POST" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
+                    
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        {{ form.member|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.full_name|as_crispy_field}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{form.beneficiary_type|as_crispy_field}}
+                                    </div>
+                                    <div class="form-group"> 
+                                        {{form.proxy|as_crispy_field}}                           
+                                    </div><div class="form-group"> 
+                                        {{form.birth_date|as_crispy_field}}                           
+                                    </div>
+                                    <div class="form-group"> 
+                                        {{form.beneficiary_status|as_crispy_field}}                           
+                                    </div>
+                                    <div class="form-group"> 
+                                        {{form.is_paid|as_crispy_field}}                           
+                                    </div>
+                                    <div class="form-group"> 
+                                        {{form.paid_date|as_crispy_field}}                           
+                                    </div>
+                                    <hr>
+                                    <br>
+                                </div>  
+                                
+                                <hr>
+                            
+                                            
+                                <div class="ln_solid"></div>
+                                <div class="form-group row btn-inline">
+                                    <div class="col-md-12 col-sm-12 offset-md-12">
+                                        <button  type="submit"  class="btn btn-primary"> 
+                                            <a href="{% url 'soc_beneficiaries:beneficiary-add' %}">
+                                            Save and Add Another
+                                            </a> </button>
+                                        <a href="{% url 'soc_beneficiaries:beneficiaries' %} " role="button" class="btn btn-secondary" type="">Cancel</a href="{% url 'soc_beneficiaries:beneficiaries'}">
+                                        <button class="btn btn-warning" type="reset">Cancel</button>
+                                        <button type="submit" class="btn btn-success">Save </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- /page content -->
+
+{% endblock content %}

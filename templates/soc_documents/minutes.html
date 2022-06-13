@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}| Minutes {% endblock title %}
+
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+    <div class="page-title">
+        <div class="title_left">
+        <h3>Minutes </h3>
+        </div>
+
+        <div class="title_right">
+        <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button">Go!</button>
+            </span>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+            <a href="{% url 'soc_documents:upload_minutes' %}" role="button" class="btn btn-primary">Add Minutes  </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+            <!-- start project list -->
+            <table class="table table-striped projects">
+                <thead>
+               
+                <tr>
+                    <th style="width: 1%">#</th>
+                    <th style="width: 20%">Meeting </th>
+                    <th>Date</th>
+                    <th>Uploaded By</th>
+                    <th>Download Document</th>
+                   
+                </tr>
+                </thead> 
+                <tbody>
+                    {% for minute in minutes %}
+                <tr>
+                    <td>{{forloop.count}}</td>
+                    <td>
+                    <a href="#"> {{minute.title}}</a>
+                    </td>
+                    <td>
+                    {{minute.date|date:'d F Y'}}
+                    </td>
+                    <td class="project_progress">
+                    {{minute.uploaded_by}}
+                    </td>
+                
+                    <td>
+                    <a href="{{minute.doc_file.url}}" target="_blank" >
+                      <button class="btn btn-primary"><i class="fa fa-download"></i>  Download Minutes  </button>  
+                    </a>
+            
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- end project list -->
+
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock content %}

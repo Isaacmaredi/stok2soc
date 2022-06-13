@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+<div class="">
+	<div class="page-title">
+	<div class="title_left">
+		<h3>Membership </small></h3>
+
+	<form action="{% url 'search_results' %}" method="get">
+		<input name="q" type="text" placeholder="Search...">
+	</form>
+	</div>
+	
+
+	<div class="title_right">
+		<div class="col-md-5 col-sm-5   form-group pull-right top_search">
+		
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb bg-light">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Members List</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+	</div>
+	<div class="title_right">
+		<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+		<div class="input-group">
+			<span class="input-group-btn">
+				<!-- <form action="" method="GET">
+					<input type="text" name="mobile_phone" value="{{request.GET.mobile_phone}}" 
+					class="form-control" placeholder="Search...">
+					<button type="submit" class="btn btn-primary text-white" >Go!</button>
+				</form> -->
+			</span>
+		</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+
+	<div class="row">
+	<div class="col-md-12">
+		<div class="x_panel">
+		
+		<div class="x_content">
+			<div class="row">
+				<div class="col-md-3 col-sm-6  ">
+					<div class="pricing_footer bg-success">
+						<div class="title" >
+							<h2 class="text-white">Total Active: <b></b></h2>
+						
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6  " >
+					<div class="pricing_footer bg-danger">
+						<div class="title text-white">
+							<h2>Total Deceased: <b></b></h2>
+				
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6  ">
+					<div class="pricing_footer bg-warning">
+						<div class="title text-white" >
+							<h2>Total Suspended: <b></b></h2>
+						
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6  ">
+					<div class="pricing_footer bg-secondary">
+						<div class="title text-white">
+							<h2>Total Terminated: <b></b></h2>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+			
+			
+			
+		<div class="card-box table-responsive"> 
+			<!-- start project list -->
+			<table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+			<thead>
+				<tr>
+				<th style="width: 1%">ID#</th>
+				<th style="width: 10%">Member Name</th>
+				<th style="width: 10%">Member Image</th>
+				<th style="width: 10%">Contact No.</th>
+				<th style="width: 10%">Email Address</th>
+				<th style="width: 5%">Status</th>
+				<th style="width: 5%" colspan="3">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for member in object_list %}
+				<tr>
+				<td> {{member.id}} </td>
+				<th>
+				<a href="{% url 'soc_members:member' member.id %}">	<span class="text-secondary">{{member.full_name}}</span> </a>
+				</th>
+				<td>
+					<ul class="list-inline">
+					<li>
+						<img src="{{member.photo.url}}" class="avatar" alt="Avatar">
+					</li>
+					</ul>
+				</td>
+				<td>{{member.mobile_phone}}</td>
+				<td> <a href="mailto:{{member.user.email}}">{{member.user.email}}</a> </td>
+
+				<td style="width: 8%">
+					<button type="button" class="btn btn-success btn-block">{{member.status}}</button>
+				</td>
+				<td style="width: 5%">
+					<a href="{% url 'soc_members:member' member.id %}" >
+						<span class="glyphicon glyphicon-info-sign text-info"></span> View 
+					</a>
+				</td>
+				<td style="width: 5%">
+					<a href="{% url 'soc_members:member' member.id %}" >
+						<span class="glyphicon glyphicon-edit text-primary" ></span> Edit 
+					</a>
+				</td>
+				<td style="width: 5%">
+					<a href="{% url 'soc_members:member' member.id %}" >
+						<span class="glyphicon glyphicon-trash text-danger" area-hiden="true" > </span> Delete
+					</a>
+				</td>
+        
+				</tr>
+				{% endfor %}
+				<tr > 
+					<th colspan="4"> <h4 class="text-center"> Total Membership (All Statusses)</h4>  </th>
+					<th colspan="5" >  <h4 class="text-center"> </h4> </th>
+				</tr>
+				
+			</tbody>
+			</table>
+
+			<!-- Pagination Section -->
+			<div class="row">
+				<div class="col-md-12" justify-content-right>
+					{% if page_obj.has_other_pages %}
+					<ul class="pagination nav navbar-right mx-right" >
+						{% if page_obj.has_previous %}
+						<li class="page-item">
+							<a href="?page={{page_obj.previous_page_number}}" class="page-link">Previous</a>
+						</li>
+					
+						{% else %}
+						<li class="page-item disabled">
+							<a class="page-link">Previous</a>
+						</li>
+						{% endif %}
+						{% for i in page_obj.paginator.page_range %}
+						{% if page_obj.number == i %}
+							<li class="page-item active">
+							<a class="page-link">{{i}}</a>
+							</li>
+						{% else %}
+							<li class="page-item">
+							<a href="?page={{i}}" class="page-link">{{i}}</a>
+							</li>
+						{% endif %}
+						{% endfor %}
+						{% if page_obj.has_next %}
+						<li class="page-item">
+							<a href="?page={{page_obj.next_page_number}}" class="page-link">Next</a>
+						</li>
+						{% else %}
+						<li class="page-item disabled">
+							<a class="page-link">Next</a>
+						</li>
+						{% endif %}
+					</ul>
+					{% endif %}
+				</div>
+			</div>
+
+			<!-- End pagination -->
+		</div>
+			<!-- end project list -->
+
+		</div>
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+<!-- /page content -->
+
+{% endblock content %}
