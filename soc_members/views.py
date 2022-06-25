@@ -45,10 +45,11 @@ class MemberListView (LoginRequiredMixin, ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(MemberListView, self).get_context_data(*args, **kwargs)
-        context['actives'] = Member.objects.filter(status='Active').count() 
-        context['deceased'] = Member.objects.filter(status='Deceased').count()
-        context['suspended'] = Member.objects.filter(status='Suspended').count()
-        context['terminated'] = Member.objects.filter(status='Terminated').count()
+        context['active_count'] = Member.objects.filter(status='Active').count() 
+        context['active'] = Member.objects.filter(status='Active') 
+        context['deceased_count'] = Member.objects.filter(status='Deceased').count()
+        context['suspended_count'] = Member.objects.filter(status='Suspended').count()
+        context['terminated_count'] = Member.objects.filter(status='Terminated').count()
         context['total'] = Member.objects.all().count()
         context['member_search'] = 'member_search'
         # context['status_search'] = 'status_search'
@@ -130,7 +131,7 @@ class BeneficiaryListView(LoginRequiredMixin,ListView):
 class BeneficiaryCreateView(LoginRequiredMixin,CreateView):
     model = Beneficiary
     form_class = BeneficiaryAddForm
-    success_url = reverse_lazy('soc_memebers:beneficiary-admin')
+    success_url = reverse_lazy('soc_members:beneficiary-admin')
     
 
 def create_beneficiaries(request, pk): 

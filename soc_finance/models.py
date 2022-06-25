@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 from soc_members.models import Member
 from datetime import datetime, date
@@ -61,7 +62,7 @@ FINE_CHOICES = [
     ('disciplinary action','Disciplinary Action'),
 ]
 
-class Fine (models.Model):
+class Fine(models.Model):
     member = models.ForeignKey(MemberAccount,related_name='member_fines', on_delete=models.DO_NOTHING)
     fine_type = models.CharField(max_length=300, choices=FINE_CHOICES)
     amount = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
@@ -69,13 +70,19 @@ class Fine (models.Model):
     
     def __str__(self):
         return f'{self.member} Fines due as at {self.member.date}'
+    
+    def update_acc_fines(self, **kwargs):
+        pass
+        
 
-# class Cashflow(models.Model):
-#     date = models.DateField()
-#     opening_bank_bal = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
-#     expenses = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
-#     income = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
-#     closing_bank_bal = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
+
+class Cashflow(models.Model):
+    date = models.DateField()
+    opening_bank_bal = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
+    expenses = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
+    income = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
+    closing_bank_bal = models.DecimalField(default=Decimal('0.0'), decimal_places=2, max_digits=10)
+
 
 #     def __str__(self):
 #         return f'Cashflow Statement for: {date.month}'

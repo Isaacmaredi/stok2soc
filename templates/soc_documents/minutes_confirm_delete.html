@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Confirm Delete 
+{% endblock title %}
+
+{% block content %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+        <div class="title_right">
+            <h2>Are you sure you want to remove minutes of "{{object.title}}"?</h2>
+        
+        </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12  ">
+                <div class="x_panel">
+                <div class="mx-auto">
+                    <div class="x_content">
+                    This will permanently delete the document from the database    
+                    </div>
+                    <br>
+                    <br>
+                    
+                </div>
+                
+            </div>
+            <br><br>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <p> 
+                    <input type="submit" class="btn btn-danger" value="Confirm"/>
+                    <a class="btn btn-secondary" href="{% url 'soc_documents:minutes-admin' %}">Cancel</a>
+                </p>     
+            </form>
+            </div>
+        </div>
+</div>
+</div>
+<!-- /page content -->
+
+{% endblock content %}

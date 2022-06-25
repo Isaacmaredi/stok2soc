@@ -29,7 +29,8 @@ urlpatterns = [
     path('soc_beneficiaries/', include('soc_beneficiaries.urls'), name='soc_beneficiaries'),
     path('soc_events/', include('soc_events.urls'), name='soc_events'),
     path('soc_documents/', include('soc_documents.urls'), name='soc_documents'),
-    path('soc_committees/', include('soc_committees.urls'), name='soc_committees')
+    path('soc_committees/', include('soc_committees.urls'), name='soc_committees'),
+    path('soc_finance/', include('soc_finance.urls'), name='soc_finance'),
 ]
 
 if settings.DEBUG:

@@ -78,7 +78,7 @@
                 </li>
                 <hr>
                 <li>
-                <i class="fa fa-briefcase user-profile-icon"></i> &nbsp;&nbsp;&nbsp;{{member.status}}
+                <i class="fa fa-briefcase user-profile-icon"></i> &nbsp;&nbsp;&nbsp; <strong>{{member.age}}</strong> 
                 </li>
                 <hr>
                 <li class="m-top-xs">
@@ -140,14 +140,21 @@
                             
                             {% empty %}
                             <tr>
-                                <td colspan="5" class="text-center"><strong >No beneficiaries for this member yet!</strong> </td> 
+                                <td colspan="6" class="text-center"><strong >No beneficiaries for this member yet!</strong> </td> 
                             </tr>
                             {% endfor %}  
                             <tr>
                                 <td colspan="6" class="text-center"></td>
                             </tr>  
-                            <tr>
-                                <td colspan="6" class="text-center"> 
+                            <tr> 
+                                <td colspan="4"></td>
+                                <td colspan="1" class="text-center"> 
+
+                                    <a href="{% url 'soc_members:members-admin' %}">
+                                        <button class="btn btn-secondary btn-block">Membership List</button>
+                                    </a>                                
+                                </td>
+                                <td colspan="1" class="text-center"> 
 
                                     <a href="{% url 'soc_members:create-beneficiary' member.id %}">
                                         <button class="btn btn-primary">Add Beneficiaries</button>

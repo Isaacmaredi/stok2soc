@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}| Minutes {% endblock title %}
+{% block title %}| Policy {% endblock title %}
 
 
 {% block content %}
@@ -8,7 +8,7 @@
 <div class="">
 <div class="page-title">
     <div class="title_left">
-    <h3>Minutes </h3>
+    <h3>List of All Policies </h3>
     </div>
 
     <div class="title_right">
@@ -40,30 +40,30 @@
             
             <tr>
                 <th style="width: 1%">#</th>
-                <th style="width: 30%">Meeting </th>
+                <th style="width: 20%">Meeting </th>
                 <th>Date</th>
                 <th>Uploaded By</th>
-                <th  style="width: 30%">Download Document</th>
+                <th>Download Document</th>
                 
             </tr>
             </thead> 
             <tbody>
-                {% for minute in minutes %}
+                {% for policy in policies %}
             <tr>
                 <td>{{forloop.count}}</td>
                 <td>
-                <a href="#"> {{minute.title}}</a>
+                <a href="#"> {{policy.title}}</a>
                 </td>
                 <td>
-                {{minute.date_uploaded|date:'d F Y'}}
+                {{policy.date|date:'d F Y'}}
                 </td>
                 <td class="project_progress">
-                {{minute.uploaded_by}}
+                {{policy.uploaded_by}}
                 </td>
             
                 <td>
-                <a href="{{minute.doc_file.url}}" target="_blank" >
-                    <button class="btn btn-primary"><i class="fa fa-download"></i>  Download Minutes  </button>  
+                <a href="{{policy.doc_file.url}}" target="_blank" >
+                    <button class="btn btn-primary"><i class="fa fa-download"></i>  Download Policy </button>  
                 </a>
         
                 </td>

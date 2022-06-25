@@ -32,7 +32,7 @@ def register(request):
                     user = User.objects.create_user(username=username, password=password,email=email,first_name=first_name,last_name=last_name)
                     user.save()
                     messages.success(request,'You are now registered and can log in')
-                    return redirect('soc_accounts:login')
+                    return redirect('soc_members:members-admin')
         else:
             messages.error(request, 'Passwords do not match')
             return redirect('soc_accounts:register')      

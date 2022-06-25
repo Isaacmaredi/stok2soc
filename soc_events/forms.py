@@ -14,7 +14,7 @@ class DateInput(forms.DateInput):
 
 class MeetingCreateForm(ModelForm):
     class Meta:
-        model = Meeting
+        model = Meeting  
         fields = ('__all__')
         
 
