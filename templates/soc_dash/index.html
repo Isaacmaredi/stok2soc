@@ -1,0 +1,130 @@
+    {% extends "base.html" %}
+
+{% block title %}| Dashboard
+    
+{% endblock title %}
+
+
+{% block content %}
+  <!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+        <div class="title_left">
+            <h3>Dashboard</h3>
+        </div>
+
+        </div>
+
+        
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                                <div class="tile-stats">
+                                <div class="icon"><i class="fa fa-users"></i>
+                                </div>
+                                <div class="count">{{member_count}}</div>
+    
+                                <h3>Total Membership</h3>
+                                <p>All statusses</p>
+                                </div>
+                            </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-user-md text-info"></i>
+                            </div>
+                            <div class="count">{{active_members}}</div>
+
+                            <h3 class="text-success">Active Members </h3>
+                            <p>Active count</p> 
+                            </div> 
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-users"></i>
+                            </div>
+                            <div class="count">{{beneficiary_count}}</div>
+
+                            <h3>Total Beneficiaries</h3>
+                            <p>All statusses</p>
+                            </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-user text-info"></i>
+                            </div>
+                            <div class="count">{{active_beneficiaries}}</div>
+
+                            <h3 class="text-success">Ative Beneficiaries</h3>
+                            <p>Active count </p>
+                            </div>
+                        </div>
+                       
+                        
+                        </div>
+                        <br />
+                        <!-- Graphs Here -->
+                <div class="clearfix"></div>
+
+                <!--Graphs starts here-->
+                <div class="row">
+                    <div class="col-md-6 col-sm-6  ">
+                        <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Members by Status</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <canvas id="canvasRadar"></canvas>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6  ">
+                        <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Beneficiaries by Status </h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            
+                    
+                            </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <canvas id="canvasDoughnut"></canvas>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                <!--End graphs -->
+                        <div class="row">
+                        <div class="col-md-3   widget widget_tally_box">
+                            
+                        </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<!--Begin Chartjs Graphs Scripts-->
+
+<!--End Chartjs Graphs Scripts-->
+
+{% endblock content %}

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+| Manage Committees 
+{% endblock title %}
+
+
+{% block content %}
+
+  <!-- page content -->
+<div class="right_col" role="main">
+<div class="">
+    <div class="page-title">
+    <div class="title_left">
+        <h3>Manage Organisational Committees </h3>
+    </div>
+
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <div class="row">
+    <div class="col-md-12"> 
+        <div class="x_panel">
+        <div class="x_title">  
+            <h2>Number of Commitees: {{total}}</h2>
+            <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+    
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <!-- start project list -->
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th style="width:10%">
+                            Name
+                        </th>
+                        <th style="width: 35%">
+                            Committee Members
+                        </th>
+                        <th style="width: 8%" >
+                            Term Starts
+                        </th>
+                        <th style="width: 8%" ">
+                            Term Ends  
+                        </th> 
+                        <th colspan="4" > 
+                            <a class="btn btn-info btn-sm btn-block"  href="{% url 'soc_committees:committee-add' %}">                    
+                                <span class="glyphicon glyphicon-plus text-light" area-hiden="true" > </span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>Add Committee</strong>  
+                            </a> 
+                        </th>                
+                    </tr>
+                </thead>
+                <tbody>
+                {% for committee in committee_list %}
+                <tr>
+                        <td style="width: 1%">
+                            {{ forloop.counter}}
+                        </td>
+                        <td style="width:10%">
+                            <a href="{% url 'soc_committees:committee-admin-detail' committee.id %}">
+                                {{ committee.name}}
+                            </a>
+                        </td>
+                        <td style="width: 35%">
+                            <ul class="list-inline">
+                            {% for incumbent in committee.incumbents.all %}
+    
+                                <li class="list-inline-item">
+                                    <img data-toggle="tooltip" title="{{incumbent.member.full_name}} : {{incumbent.portfolio}}" class="avatar" alt="Incumbent Picture" class="table-avatar" src="{{incumbent.member.photo.url}}">                              
+                                </li>  
+                            {% endfor %}
+                            </ul>
+                        </td>
+    
+                        <td>
+                            {{ committee.term_starts|date:'d M Y'}}
+                        </td>
+                        <td>
+                            {{ committee.term_ends|date:'d M Y'}}
+                        </td>
+    
+                        
+                        <td style="width: 5%">
+                            <a href="{% url 'soc_committees:committee-admin-detail' committee.id %}" >
+                                <span class="glyphicon glyphicon-info-sign text-info"></span> Details
+                            </a>
+                        </td>
+                        <td style="width: 5%">
+                            <a href="{% url 'soc_committees:committee-update' committee.id %}" >
+                                <span class="glyphicon glyphicon-edit text-primary" ></span> Edit 
+                            </a>
+                        </td>
+                        <td style="width: 8%">
+                            <a href="{% url 'soc_committees:incumbent-add' committee.id %}" >
+                                <span class="glyphicon glyphicon-plus text-success" area-hiden="true" > </span> Add Incumbent
+                            </a>
+                        </td>
+                        <td style="width: 5%">
+                            <a href="{% url 'soc_committees:committee-delete' committee.id %}" >
+                                <span class="glyphicon glyphicon-trash text-danger" area-hiden="true" > </span> Delete
+                            </a>
+                        </td>
+                        
+                        {% empty %} 
+                        <th colspan="8" class="text-center">No committees recorded yet!</th colspan="8">
+                    </tr> 
+
+            {% endfor %}
+                </tbody>
+            </table>
+            <!-- end project list -->
+
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+<!-- /page content -->
+
+
+{% endblock content %}

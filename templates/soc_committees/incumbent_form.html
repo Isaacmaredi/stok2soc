@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}| Add Committee {% endblock title %}
+
+{% block content %}
+
+  <!-- page content -->
+  <div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>{{committee.name}}</h3>
+            </div>
+
+            
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">  
+                        <h2>Current Incumbents of the {{committee.name}} for the period: <strong class="text-success"> {{committee.term_starts|date:'d F Y'}} - {{committee.term_ends|date:'d F Y'}}</strong></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                    
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+                
+                                    <!--Beneficiaries-->
+                                    <table class="data table table-striped no-margin">
+                                        <thead>
+                
+                                            <tr>
+                                            <th>#</th>
+                                            
+                                            <th>Member Name</th>                     
+                                            <th>Portfolio</th>
+                                            <td>Remove Incumbent</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        
+                                            {% for incumbent in committee.incumbents.all %}
+                                            
+                                            <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            
+                                            <td>{{incumbent.member}}</td>
+                                            
+                                            <td>{{incumbent.portfolio}} </td>
+                                            <td style="width: 10%">
+                                                <a href="{% url 'soc_committees:incumbent-delete' incumbent.id %}" >
+                                                    <span class="glyphicon glyphicon-trash text-danger" area-hiden="true" > </span> Delete
+                                                </a>
+                                            </td>
+                    
+                            
+                                            </tr>
+                                            {% empty %}
+                                            <td colspan="5" class="text-center"><strong >No incumbents recorded for this committee yet!</strong> </td> 
+                                            {% endfor %}
+                                            
+                                        </tbody>
+                                        </table>
+                                        <hr>                              
+                                        <div>
+                                        </div>                            
+                                </div>         
+                                </div>
+                            </div>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 sm-12">
+                <div class="x_panel"></div>
+                <div class="x_title">
+                    <h2> <strong>Add {{committee.shortname}} incumbents</strong>  </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>                   
+                    </ul>
+                    <div class="clearfix"></div>
+                    <div class="x_content">
+                    <form action="" method="POST">
+                        {% csrf_token %} 
+                        <table class="table">
+                            {{ formset.management_form }}
+            
+                            {% for form in formset.forms %}
+                                {% if forloop.first %}
+                                    <thead>
+                                    <tr>
+                                        {% for field in form.visible_fields %}
+                                            <th>{{ field.label|capfirst }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                {% endif %}
+                                <tr class="{% cycle row1 row2 %} formset_row">
+                                    {% for field in form.visible_fields %}
+                                        <td>
+                                            {# Include the hidden fields in the form #}
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {{ field.errors.as_ul }}
+                                            {{ field|as_crispy_field}}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <p>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <a href="{% url 'soc_committees:committee-admin' %}" class="btn btn-secondary"> Cancel</a>
+                        </p>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+<script>
+
+    $('#userSelect').prop('disabled', true);
+    $('#statusSelect').prop('disabled', true);
+
+</script>
+{% endblock content %}

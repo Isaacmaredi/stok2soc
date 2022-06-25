@@ -1,175 +1,101 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load humanize %} 
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+| Funerals 
+{% endblock title %}
+
 
 {% block content %} 
 
+  <!-- page content -->
 <div class="right_col" role="main">
 <div class="">
-	<div class="page-title">
-	<div class="title_left">
-		<h3>List of Funerals </small></h3>
-	</div>
-	
+    <div class="page-title">
+    <div class="title_left">
+        <h3>List of all Funerals </h3>
+    </div>
 
-	<div class="title_right">
-		<div class="col-md-5 col-sm-5   form-group pull-right top_search">
-		
-			<nav aria-label="breadcrumb">
-				<ol class="breadcrumb bg-light">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Funerals</li>
-				</ol>
-			</nav>
-		</div>
-	</div>
-	</div>
-	<div class="title_right">
-		<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-		<div class="input-group">
-			<span class="input-group-btn">
-				<!-- <form action="" method="GET">
-					<input type="text" name="mobile_phone" value="{{request.GET.mobile_phone}}" 
-					class="form-control" placeholder="Search...">
-					<button type="submit" class="btn btn-primary text-white" >Go!</button>
-				</form> -->
-			</span>
-		</div>
-		</div>
-	</div>
-	<div class="clearfix"></div>
+    </div>
+    
+    <div class="clearfix"></div>
 
-	<div class="row">
-	<div class="col-md-12">
-		<div class="x_panel">
-		
-		<div class="x_content">
-			
-            <div class="card-box table-responsive"> 
-                <!-- start project list -->
-                <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%">Funeral Date</th>
-                            <th style="width: 10%">  Bereaved Member</th>
-                            <th style="width: 20%"> Deceased Type</th>
-                            <th style="width: 20%">Deceased Name  </th>
-                            <th style="width: 25%">Venue</th>     
-                            <th style="width: 25%"> Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    
-                        <tr>
-                    {% for funeral in funerals %}
-                            <td>{{ funeral.date|date:'d F Y'}}</td>
-                            
-                            <td> {{funeral.bereaved_member}}</td>
-                            <td> {{funeral.deceased_type}}</td>
-                            <td>
-                                {% if funeral.deceased_type == "Beneficiary" %}
-                                    {{funeral.deceased_beneficiary.name}} 
-                                {% else %}
-                                    {{funeral.deceased_member}}
-                                {% endif %}
-                            </td>                                  
-                            <td> {{funeral.venue}}</td>
-                            <td class="project-actions">
-                                <a class="btn btn-info btn-sm" href="">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                Attendance Register
-                                </a>             
-                            </td>
-                            {% empty %}
-                            <th colspan="6" class="text-center"> The are no funerals recorded in the databse</th colspan="6">
-                        </tr>   
-            
-                {% endfor %}
-            
-                    </tbody>
-                </table>
+    <div class="row">
+    <div class="col-md-12"> 
+        <div class="x_panel">
+        <div class="x_title">  
+            <h2>Number of funerals on record: </h2>
+            <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+    
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
 
-                <!-- Pagination Section -->
-                <div class="row">
-                    <div class="col-md-12" justify-content-right>
-                        {% if page_obj.has_other_pages %}
-                        <ul class="pagination nav navbar-right mx-right" >
-                            {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a href="?page={{page_obj.previous_page_number}}" class="page-link">Previous</a>
-                            </li>
+            <!-- start project list -->
+            <table class="table table-striped projects">
+                <thead>
+                
+                    <tr>
+                        <th>#</th>
+                        <th style="width: 20%">Funeral Date</th>
+                        <th style="width: 20%">  Bereaved Member</th>
+                        <th style="width: 10%"> Deceased Type</th>
+                        <th style="width: 15%">Deceased Name  </th>
+                        <th style="width: 15%">Venue</th>     
+                        <th colspan="5" style="width: 35%" > 
+                            Attendane Register
+                        </th>   
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <tr>
+                {% for funeral in funerals %}
+                        <td>{{forloop.counter}}</td>
+                        <td>{{ funeral.date|date:'d F Y'}}</td>
                         
+                        <td> {{funeral.bereaved_member}}</td>
+                        <td> {{funeral.deceased_type}}</td>
+                        <td class="text-danger">
+                            {% if funeral.deceased_type == "Beneficiary" %}
+                                {{funeral.deceased_beneficiary}} 
                             {% else %}
-                            <li class="page-item disabled">
-                                <a class="page-link">Previous</a>
-                            </li>
-                            {% endif %}
-                            {% for i in page_obj.paginator.page_range %}
-                            {% if page_obj.number == i %}
-                                <li class="page-item active">
-                                <a class="page-link">{{i}}</a>
-                                </li>
-                            {% else %}
-                                <li class="page-item">
-                                <a href="?page={{i}}" class="page-link">{{i}}</a>
-                                </li>
-                            {% endif %}
-                            {% endfor %}
-                            {% if page_obj.has_next %}
-                            <li class="page-item">
-                                <a href="?page={{page_obj.next_page_number}}" class="page-link">Next</a>
-                            </li>
-                            {% else %}
-                            <li class="page-item disabled">
-                                <a class="page-link">Next</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                        {% endif %}
-                        </div>
-                    </div>
+                                {{funeral.deceased_member}}
+                            {% endif %} 
+                        </td>                                  
+                        <td> {{funeral.venue}}</td>
 
-                <!-- End pagination -->
-                </div>
-			<!-- end project list -->
+                        <td style="width: 10%">
+                            <a href="{% url 'soc_events:funeral' funeral.id %}" >
+                                <span class="glyphicon glyphicon-file text-info"></span>View  Attendance 
+                            </a>
+                        </td>         
+  
+                </tbody>          
+                    </tr> 
+                    {% empty %} 
+                    <tr>
+                        <th colspan="8" class="text-center">No meetings recorded yet!</th> 
+                    </tr>
+                
 
-		</div>
-		</div>
-	</div>
-	</div>
-</div>
-</div>
+            {% endfor %}
+                </tbody>
+            </table>
+            <!-- end project list -->
 
-
-
-
-    <!-- Default box -->
-    <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">List of Funerals</h3>
-
-        <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-            <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-            <i class="fas fa-times"></i>
-        </button>
+        </div>
         </div>
     </div>
-    <div class="card-body p-0">
-        <table class="table table-bordered">
-            
-        </table>
     </div>
-    <!-- /.card-body -->
-    </div>
-    <!-- /.card -->
-
-</section>
-<!-- /.content -->
 </div>
-<!-- /.content-wrapper 
+</div>
+<!-- /page content -->
 
-{% endblock %}
+
+{% endblock content %}meetings

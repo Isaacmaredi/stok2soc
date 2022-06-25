@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{%load crispy_forms_tags %}
+
+
+{% block title %}| {{member}} Attendance Register {% endblock title %}
+
+{% block content %}
+
+<!-- page content -->  
+<div class="right_col" role="main">
+<div class="">
+    <div class="page-title">
+    <div class="title_left">
+        <h2>Create/Update Attendance Register for {{funeral}} </h2>  
+    </div>
+
+
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <div class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+        <div class="x_title">
+            
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            
+            <div class="col-md-12 col-sm-12 ">
+
+            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+
+                    <!--Beneficiaries-->
+                    <table class="data table table-striped no-margin">
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Member Name</th>
+                            <th>Is Present</th>
+                            <th>Apology</th>
+                            <th>Manage Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                            {% for attendance in funeral.funeral_attendances.all %}
+                            
+                            <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{attendance.member}}</td>
+                            <td>{{attendance.is_present}}</td>
+                            <td class="hidden-phone">{{attendance.absence_reason}}</td>
+                            </tr>
+                            {% empty %}
+                            <td colspan="5" class="text-center">
+                                <strong>No attendance recorder yet for this for this funeral </strong> 
+                            </td> 
+                            {% endfor %}
+                            
+                        </tbody>
+                        </table>
+                        <hr>
+                    
+                        <div>
+                
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                
+                     
+                                <table class="table">
+                                    {{ formset.management_form }}
+                    
+                                    {% for form in formset.forms %}
+                                        {% if forloop.first %}
+                                            <thead>
+                                            <tr>
+                                                {% for field in form.visible_fields %}
+                                                    <th>{{ field.label|capfirst }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                            </thead>
+                                        {% endif %}
+                                        <tr class="{% cycle row1 row2 %} formset_row">
+                                            {% for field in form.visible_fields %}
+                                                <td>
+                                                    {# Include the hidden fields in the form #}
+                                                    {% if forloop.first %}
+                                                        {% for hidden in form.hidden_fields %}
+                                                            {{ hidden }}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {{ field.errors.as_ul }}
+                                                    {{ field|as_crispy_field}}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                                
+                                <p>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'soc_events:funeral-admin' %}" class="btn btn-secondary"> Cancel</a>
+                                </p>
+                        
+                            </form>
+                    
+
+                        </div>
+                    
+                </div>         
+                </div>
+            </div>
+            </div>
+            <!--Start beneficiaries create form -->
+            
+            <!-- start of user-activity-graph -->
+                
+            <!-- end of user-activity-graph -->
+           
+    
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+<!-- /page content -->
+
+{% endblock content %}

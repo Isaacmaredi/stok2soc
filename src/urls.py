@@ -19,20 +19,22 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from soc_main.views import MemberListView
+from soc_dash.views import main_dash
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', MemberListView.as_view(), name='home'),
+    path('', main_dash, name='home'),
     path('soc_accounts/', include('soc_accounts.urls'), name='soc_accounts'),
     path('soc_members/', include('soc_members.urls'), name='soc_members'),
     path('soc_beneficiaries/', include('soc_beneficiaries.urls'), name='soc_beneficiaries'),
     path('soc_events/', include('soc_events.urls'), name='soc_events'),
     path('soc_documents/', include('soc_documents.urls'), name='soc_documents'),
+    path('soc_committees/', include('soc_committees.urls'), name='soc_committees')
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-admin.site.site_header ='Soc2Stock Admin Portal' 
-admin.site.index_title ='Manage the Soc2Stock Portal'
+admin.site.site_header ='Stok2Soc Admin Portal' 
+admin.site.index_title ='Manage the Stock2Soc Portal'

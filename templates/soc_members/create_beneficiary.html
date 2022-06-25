@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{%load crispy_forms_tags %}
+
+
+{% block title %}| {{member}} details {% endblock title %}
+
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+<div class="">
+    <div class="page-title">
+    <div class="title_left">
+        <h3>Add Beneficiaries for {{member.full_name}}</h3>  
+    </div>
+
+    
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <div class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+        <div class="x_title">
+            
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            
+            <div class="col-md-12 col-sm-12 ">
+
+            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+
+                    <!--Beneficiaries-->
+                    <table class="data table table-striped no-margin">
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Beneficiary Name</th>
+                            <th>Date of Birth</th>
+                            <th class="hidden-phone">Type</th>
+                            <th>Status</th>
+                            </tr>  
+                        </thead>
+                        <tbody>
+                        
+                            {% for beneficiary in member.beneficiaries.all %}
+                            
+                            <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{beneficiary.full_name}}</td>
+                            <td>{{beneficiary.birth_date|date:"d F Y"}}</td>
+                            <td class="hidden-phone">{{beneficiary.beneficiary_type}}</td>
+                            <td class="vertical-align-mid">
+                                <div class="progress">
+                                    {% if beneficiary.beneficiary_status == 'Active' %}
+                                    <div class="progress-bar progress-bar-success" data-transitiongoal="60">Active</div>
+                                    {% elif  beneficiary.beneficiary_status == 'Deceased' %}
+                                    <div class="progress-bar progress-bar-danger" data-transitiongoal="60">Deceased</div>
+                                    {% else %}
+                                    <div class="progress-bar progress-bar-info" data-transitiongoal="60">Inactive</div>
+                                    {% endif %}
+                                </div>
+    
+                            </td>
+                            </tr>
+                            {% empty %}
+                            <td colspan="5" class="text-center"><strong >No beneficiaries for this member yet!</strong> </td> 
+                            {% endfor %}
+                            
+                        </tbody>
+                        </table>
+                        <hr>
+                     
+                        <div>
+                
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                
+                    
+                                <table class="table">
+                                    {{ formset.management_form }}
+                    
+                                    {% for form in formset.forms %}
+                                        {% if forloop.first %}
+                                            <thead>
+                                            <tr>
+                                                {% for field in form.visible_fields %}
+                                                    <th>{{ field.label|capfirst }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                            </thead>
+                                        {% endif %}
+                                        <tr class="{% cycle row1 row2 %} formset_row">
+                                            {% for field in form.visible_fields %}
+                                                <td>
+                                                    {# Include the hidden fields in the form #}
+                                                    {% if forloop.first %}
+                                                        {% for hidden in form.hidden_fields %}
+                                                            {{ hidden }}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {{ field.errors.as_ul }}
+                                                    {{ field|as_crispy_field}}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                                
+                                <p>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'soc_members:members-admin' %}" class="btn btn-secondary"> Cancel</a>
+                                </p>
+                        
+                            </form>
+                    
+
+                        </div>
+                    
+                </div>         
+                </div>
+            </div>
+            </div>
+            <!--Start beneficiaries create form -->
+            
+            <!-- start of user-activity-graph -->
+                
+            <!-- end of user-activity-graph -->
+           
+    
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+<!-- /page content -->
+
+{% endblock content %}

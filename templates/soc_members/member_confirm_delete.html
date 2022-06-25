@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Confirm Delete 
+{% endblock title %}
+
+{% block content %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+        <div class="title_right">
+          <h3>Delete Member! </h3>  <p>Are you sure you want to delete <strong>{{object.full_name}}</strong> from the list?</p>
+            
+        </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12  ">
+                <div class="x_panel">
+                <div class="mx-auto">
+                    <div class="x_content">
+                    This will permanently remove <strong>the member profile and his user account</strong> 
+                    from the system!
+                    </div>
+                    <br>
+                    <br>
+                    
+                </div>
+                
+            </div>
+            <br><br>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <p> 
+                    <input type="submit" class="btn btn-danger" value="Confirm"/>
+                    <a class="btn btn-secondary" href="{% url 'soc_members:members-admin' %}">Cancel</a>
+                </p>     
+            </form>
+            </div>
+        </div>
+</div>
+</div>
+<!-- /page content -->
+
+{% endblock content %}

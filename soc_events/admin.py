@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Meeting, Attendance, Funeral, FuneralAttendance
+from .models import Meeting, MeetingAttendance, Funeral, FuneralAttendance
 # Register your models here.
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ['id','date','meeting_type','host','alt_venue']
@@ -22,13 +22,13 @@ admin.site.register(Funeral, FuneralAdmin)
 
 # admin.site.register(Attendance, AttendanceAdmin)
 
-class AttendanceAdmin(admin.ModelAdmin):
+class MeetingAttendanceAdmin(admin.ModelAdmin):
     list_display = ['meeting','member','is_present','absence_reason']
     list_filter = ('meeting','is_present')
     search_fields = ('meeting',)
     list_editable = ('is_present','absence_reason',)
     
-admin.site.register(Attendance, AttendanceAdmin)
+admin.site.register(MeetingAttendance, MeetingAttendanceAdmin)
 
 class FuneralAttendanceAdmin(admin.ModelAdmin):
     list_display = ['funeral','member','is_present','absence_reason']

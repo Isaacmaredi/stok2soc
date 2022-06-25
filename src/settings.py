@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     #My Apps
     'soc_accounts',
     'soc_beneficiaries',
+    'soc_committees',
     'soc_main',
     'soc_members',
     'soc_events',
     'soc_documents',
+    'soc_finance',
     #Django Libraries
     'crispy_forms',
     'django_filters',

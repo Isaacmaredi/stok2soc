@@ -8,36 +8,26 @@
 <div class="right_col" role="main">
 <div class="">
 	<div class="page-title">
-	<div class="title_left">
-		<h3>Membership </small></h3>
+		<div class="title_left">
+			<h3>Total Membership (all statusses): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{total}} </small></h3>
+	
+		
+		</div>
+				
+	
+		<div class="title_right">
+			<div class="col-md-5 col-sm-5   form-group pull-right top_search">
+			
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb bg-light">
+						<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Memberhip</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
 	</div>
 	
-
-	<div class="title_right">
-		<div class="col-md-5 col-sm-5   form-group pull-right top_search">
-		
-			<nav aria-label="breadcrumb">
-				<ol class="breadcrumb bg-light">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Members List</li>
-				</ol>
-			</nav>
-		</div>
-	</div>
-	</div>
-	<div class="title_right">
-		<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-		<div class="input-group">
-			<span class="input-group-btn">
-				<form action="" method="GET">
-					<input type="text" name="q" value="{{request.GET.full_name}}" 
-					class="form-control" placeholder="Search  Member Name">
-					<button type="submit" class="btn btn-primary text-white" >Go!</button>
-				</form>
-			</span>
-		</div>
-		</div>
-	</div>
 	<div class="clearfix"></div>
 
 	<div class="row">
@@ -51,8 +41,7 @@
 						<a href="{{members.active_status.url}}">
 						<div class="pricing_footer bg-success">
 							<div class="title" >
-								<h2 class="text-white">Total Active: <b>{{actives}}</b></h2>
-							
+								<h2 class="text-white">Total Active: <b>{{actives}}</b></h2>					
 							</div>
 						</div>
 						</a>
@@ -95,8 +84,8 @@
 				<th style="width: 10%">Member Image</th>
 				<th style="width: 10%">Contact No.</th>
 				<th style="width: 10%">Email Address</th>
-				<th style="width: 5%">Status</th>
-				<th style="width: 5%" colspan="3">Actions</th>
+				<th style="width: 3%">Status</th>
+				<th style="width: 5%" colspan="3">Details</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -119,29 +108,18 @@
 				<td class="vertical-align-mid">
 					<div class="progress">
 						{% if member.status == 'Active' %}
-						<div class="progress-bar progress-bar-success" data-transitiongoal="80">{{member.status}}</div>
+						<div class="progress-bar progress-bar-success" data-transitiongoal="100">{{member.status}}</div>
 						{% elif  member.status == 'Deceased' %}
-						<div class="progress-bar progress-bar-danger" data-transitiongoal="80">{{member.status}} </div>
+						<div class="progress-bar progress-bar-danger" data-transitiongoal="100">{{member.status}} </div>
 						{% else %}
-						<div class="progress-bar progress-bar-warning" data-transitiongoal="80">{{member.status}}</div>
+						<div class="progress-bar progress-bar-warning" data-transitiongoal="100">{{member.status}}</div>
 						{% endif %}
 					</div>
 				<td style="width: 5%">
 					<a href="{% url 'soc_members:member' member.id %}" >
 						<span class="glyphicon glyphicon-info-sign text-info"></span> View 
 					</a>
-				</td>
-				<td style="width: 5%">
-					<a href="{% url 'soc_members:member-edit' member.id %}" >
-						<span class="glyphicon glyphicon-edit text-primary" ></span> Edit 
-					</a>
-				</td>
-				<td style="width: 5%">
-					<a href="{% url 'soc_members:member' member.id %}" >
-						<span class="glyphicon glyphicon-trash text-danger" area-hiden="true" > </span> Delete
-					</a>
-				</td>
-        
+				</td>   
 				</tr>
 				{% endfor %}
 				
@@ -196,7 +174,7 @@
 		</div>
 	</div>
 	</div>
-</div>
+
 </div>
 <!-- /page content -->
 

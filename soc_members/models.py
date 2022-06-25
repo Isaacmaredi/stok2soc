@@ -51,7 +51,10 @@ class Member(models.Model):
     photo = models.ImageField(default='static/img/default2.png', upload_to='member_photos/%Y')
     
     def __str__(self):
-        return f'{self.user.last_name} {self.user.first_name[0]}{self.middlename[0]}'
+        if self.middlename:
+            return f'{self.user.last_name} {self.user.first_name[0]}{self.middlename[0]}'
+        else:
+            return f'{self.user.last_name} {self.user.first_name[0]}'
     
     def save(self, *args, **kwargs):
         if self.middlename:
@@ -70,7 +73,7 @@ class Member(models.Model):
 class Beneficiary(models.Model):
     member = models.ForeignKey(Member,on_delete=models.CASCADE, 
                             related_name='beneficiaries')
-    full_name = models.CharField(max_length=256)
+    full_name = models.CharField(max_length=400)
     beneficiary_type = models.CharField(verbose_name="Beneficiary Type",
                                         max_length=100, 
                                         choices=beneficiary_type,
@@ -90,3 +93,6 @@ class Beneficiary(models.Model):
     
     def __str__(self):
         return self.full_name
+    
+    def get_absolute_url(self):
+        return reverse('soc_members:member', kwargs= {'pk':self.member_pk})

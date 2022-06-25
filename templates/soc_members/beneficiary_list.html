@@ -29,16 +29,10 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                    <h2>All Benficiaries </h2>
+                    <h2>Total Beneficiaries (All Statusses): {{beneficiaries.count}}</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                        <div class="col-middle" style="border:0px solid #e5e5e5;">
-                            <div class="">
-                                
-                                
-                            </div>
-                        </div>
                         
-                     
+                        
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -50,37 +44,6 @@
                                 {% if beneficiaries %}
                                 <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
-                                    <tr >
-                                        <th colspan="3"></th>
-                                        <th colspan="3">
-                                            <ul class="list-inline prod_color display-layout">
-                                                <li>
-                                                <p><small>
-                                                        <b>Status Legend&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        </b> 
-                                                    </small>
-                                                </p>
-                                                </li>
-                                                <li>
-                                                <p>Active</p>
-                                                <div class="color bg-green"></div>
-                                                </li>
-                                                <li>
-                                                <li>
-                                                <p>Deceased</p>
-                                                <div class="color bg-red"></div>
-                                                </li>
-                                                <li>
-                                                <p>Inactive</p>
-                                                <div class="color bg-orange"></div>
-                                                </li>
-                                            </ul>
-                                            
-
-                                        </th>
-                                    </tr>
                                     <tr>
                                     
                                         <th>Full Name </th>
@@ -88,8 +51,8 @@
                                         <th>Type</th>
                                         <th>Proxy</th>
                                         <th>Birth Date </th>
-                                        <th>Status</th>
-                                        <th>Status Ind</th>
+                    
+                                        <th>Status indicator</th>
                                         <th>Paid </th>
                                         <th>Paid-up Date</th>
                                     </tr>
@@ -107,7 +70,6 @@
                                         <td>{{beneficiary.beneficiary_type}}</td>
                                         <td>{{beneficiary.proxy}}</td>
                                         <td>{{beneficiary.birth_date}}</td>
-                                        <td>{{beneficiary.beneficiary_status}}</td>
                                         <td>  
                                         <ul class="list-inline prod_color display-layout">                                     
                                             {% if beneficiary.beneficiary_status == 'Active' %}
@@ -132,6 +94,34 @@
                                         {% endfor %}
                                         </tbody>
                                 </table>
+                                <th colspan="3">
+                                    <ul class="list-inline prod_color display-layout">
+                                        <li>
+                                        <p><small>
+                                                <b>Status Legend&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </b> 
+                                            </small>
+                                        </p>
+                                        </li>
+                                        <li>
+                                        <p>Active</p>
+                                        <div class="color bg-green"></div>
+                                        </li>
+                                        <li>
+                                        <li>
+                                        <p>Deceased</p>
+                                        <div class="color bg-red"></div>
+                                        </li>
+                                        <li>
+                                        <p>Inactive</p>
+                                        <div class="color bg-orange"></div>
+                                        </li>
+                                    </ul>
+                                    
+
+                                </th>
                                     {% else %}
                                     <p class="text-muted font-13 m-b-30">
                                         There are no beneficiaries in database

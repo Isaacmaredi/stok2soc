@@ -1,5 +1,6 @@
+from distutils.log import Log
 from re import M
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
@@ -13,19 +14,21 @@ from django.views.generic.edit import (CreateView,
                                     FormView,)
 from django.views.generic.detail import SingleObjectMixin
 from .models import Member, Beneficiary
-from .forms import MemberCreateForm,  BeneficiaryFormset, MemberSearchForm
-  
-
+from .forms import (MemberCreateForm,  
+                    BeneficiaryFormset, 
+                    BeneficiaryCreateForm, 
+                    BeneficiaryAddForm,
+                    MemberSearchForm)
 
 class MemberCreateView(LoginRequiredMixin, CreateView):
     model = Member
     form_class = MemberCreateForm 
-    template_name = 'soc_members/member_form1.html'
+    template_name = 'soc_members/member_form.html'
     
 class MemberUpdateView(LoginRequiredMixin, UpdateView):
     model = Member
     form_class = MemberCreateForm 
-    template_name = 'soc_members/member_form1.html'
+    template_name = 'soc_members/member_form.html'
     
     
 class MemberListView (LoginRequiredMixin, ListView):
@@ -33,20 +36,12 @@ class MemberListView (LoginRequiredMixin, ListView):
     context_object_name ='members'
     form_class = MemberSearchForm
     template_name = 'soc_members/member_list.html'
-    paginate_by = 8
-    # queryset = Member.objects.filter(status__icontains='act')
-
+    paginate_by = 10
 
     def get_queryset(self):  
         member_query = self.request.GET.get('q', default="") 
         member_search =  Member.objects.filter(full_name__icontains=member_query)
         return member_search
-    
-    # def get_queryset(self):
-    #     status_query = self.request.GET.get('s', default="")
-    #     status_search = Member.objects.filter(status__iexact=status_query)
-    #     return status_search
-    
     
     def get_context_data(self, *args, **kwargs):
         context = super(MemberListView, self).get_context_data(*args, **kwargs)
@@ -59,12 +54,12 @@ class MemberListView (LoginRequiredMixin, ListView):
         # context['status_search'] = 'status_search'
         return context 
 
-class MemberAdminView(LoginRequiredMixin, ListView):
+class MemberAdminListView(LoginRequiredMixin, ListView):
     model = Member
     context_object_name = 'members'
     template_name = 'soc_members/member_admin.html'
     paginate_by = 8
-        
+
     def get_queryset(self):
         query = self.request.GET.get('q', default="") 
         
@@ -73,16 +68,8 @@ class MemberAdminView(LoginRequiredMixin, ListView):
         )
         return member_search 
     
-    def get_queryset(self):
-        query = self.request.GET.get('q', default="") 
-        
-        status_search = Member.objects.filter(
-            Q(status__iexact=query) 
-        )
-        return status_search 
-    
     def get_context_data(self, *args, **kwargs):
-        context = super(MemberAdminView, self).get_context_data(*args, **kwargs)
+        context = super(MemberAdminListView, self).get_context_data(*args, **kwargs)
         context['actives'] = Member.objects.filter(status='Active').count() 
         context['deceased'] = Member.objects.filter(status='Deceased').count()
         context['suspended'] = Member.objects.filter(status='Suspended').count()
@@ -90,7 +77,7 @@ class MemberAdminView(LoginRequiredMixin, ListView):
         context['total'] = Member.objects.all().count()
         context['member_search'] = 'member_search'
         context['status_search'] = 'status_search'
-        return context 
+        return context   
 
 
 class MemberDetailView(LoginRequiredMixin, DetailView):
@@ -98,12 +85,16 @@ class MemberDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'member'
     template_name= 'soc_members/member-detail.html'
     
-    def test_func(self):
-        member = self.get_object()
-        if self.request.user.id == member.id:
-            print('User ID: ',self.request.user.id, '-- Member ID: ', member.id)
-            return True
-        return False
+class MemberDeleteView(LoginRequiredMixin, DeleteView):
+    model = Member
+    success_url = reverse_lazy('soc_members:members-admin')
+    
+class MemberAdminDetailView(LoginRequiredMixin, DetailView):
+    model = Member
+    context_object_name = 'member'
+    template_name = 'soc_members/member_admin_detail.html'
+    
+
     
 class MyProfileDetailView(LoginRequiredMixin, UserPassesTestMixin , DetailView):
     model = Member 
@@ -129,145 +120,82 @@ class BeneficiaryListView(LoginRequiredMixin,ListView):
     model = Beneficiary
     context_object_name = 'beneficiaries'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(BeneficiaryListView, self).get_context_data(*args, **kwargs )
+        context['actives'] = Beneficiary.objects.filter(beneficiary_status='Active')
+        context['deceased'] = Beneficiary.objects.filter(beneficiary_status='Deceased')
+        context['inactives'] = Beneficiary.objects.filter(beneficiary_status='Inactive')
+        return context
+
+class BeneficiaryCreateView(LoginRequiredMixin,CreateView):
+    model = Beneficiary
+    form_class = BeneficiaryAddForm
+    success_url = reverse_lazy('soc_memebers:beneficiary-admin')
     
-def manage_beneficiaries(request, pk):
-    progress = 60
+
+def create_beneficiaries(request, pk): 
     member = Member.objects.get(pk=pk)
+    formset = BeneficiaryFormset(request.POST or None)
     if request.method == "POST":
-        formset = BeneficiaryFormset(request.POST, request.FILES, instance=member)
         if formset.is_valid():
+            formset.instance = member
             formset.save()
-            # Do something. Should generally end with a redirect. For example:
-            return HttpResponseRedirect(member.get_absolute_url())
-    else:
-        formset = BeneficiaryFormset(instance=member)
+            return redirect ('soc_members:member', pk=member.id)
         
-        context = {
-            'formset': formset,
-            'member': member,  
-            'progress': progress,   
-        }
+    context = {
+        'formset': formset, 
+        'member': member,    
+    }     
+    return render(request, 'soc_members/create_beneficiary.html', context )
+
+class BeneficiaryAdminListView(LoginRequiredMixin,ListView):
+    model = Beneficiary
+    context_object_name = 'beneficiaries'
+    template_name = 'soc_members/beneficiary_admin.html'
+    paginate_by = 8
+    
+    def get_queryset(self):
+        query = self.request.GET.get('q', default="") 
         
-    return render(request, 'soc_members/member_form.html', context )
-
-
-# class BeneficiaryUpdateView(UpdateView):
-#     model = Member
-#     fields = ['user']
-#     success_url = reverse_lazy('soc_members:members')
-
-#     def get_context_data(self, **kwargs):
-#         data = super(BeneficiaryUpdateView, self).get_context_data(**kwargs)
-#         if self.request.POST:
-#             data['beneficiaries'] = BeneficiaryFormset(self.request.POST)
-#         else:
-#             data['beneficiaries'] = BeneficiaryFormset()
-#         return data
-
-#     def form_valid(self, form):
-#         context = self.get_context_data()
-#         beneficiaries = context['beneficiaries']
-#         with transaction.atomic():
-#             self.object = form.save()
-
-#             if beneficiaries.is_valid():
-#                 beneficiaries.instance = self.object
-#                 beneficiaries.save()
-#         return super(BeneficiaryUpdateView, self).form_valid(form)
-
-class BeneficiaryUpdateView(SingleObjectMixin, FormView):
-    model = Member
-    fields = ['user', 'middlename','mobile_phone',]
-    template_name = 'soc_members/beneficiary_edit.html'
-    
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=Member.objects.all())
-        super().get(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=Member.objects.all())
-        super().post(request, *args, **kwargs)
-    
-    def get_form(self, form_class=None):
-        return BeneficiaryFormset(**self.get_form_kwargs(), instance= self.object)
-    
-    def form_valid(self, form):
-        form.save()
-    
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            'Beneficiaries have been added'
+        beneficiary_search = Beneficiary.objects.filter(
+            Q(full_name__icontains=query) 
         )
-        
-        return HttpResponseRedirect(reverse('soc_members:member', kwargs={'pk': self.object.pk}))
+        return beneficiary_search 
     
-    # def get_success_url(self):
-    #     return reverse('soc_members:member', kwargs={'pk': self.object.pk})
-        
-    #     data = super(BeneficiaryUpdateView, self).get_context_data(**kwargs)
-        
-    #     if self.request.POST:
-    #         data['beneficiaries'] = BeneficiaryInlineFormset(self.object, instance = self.object)
-    #     else:
-    #         data['beneficiaries'] = BeneficiaryInlineFormset()  
-    #     return data
+    # def get_queryset(self):
+    #     ben_query = self.request.GET.get('s', default="")
+    #     beneficiary_status_search = Beneficiary.objects.filter(
+    #         Q(beneficiary_status__icontains=ben_query))
+    #     return beneficiary_status_search
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(BeneficiaryAdminListView, self).get_context_data(*args, **kwargs)
+        context['actives'] = Beneficiary.objects.filter(beneficiary_status='Active').count() 
+        context['deceased'] = Beneficiary.objects.filter(beneficiary_status='Deceased').count()
+        context['inactive'] = Beneficiary.objects.filter(beneficiary_status='Inactive').count()
+        context['total'] = Beneficiary.objects.all().count()
+        context['beneficiary_search'] = 'beneficiary_search'
+        # context['beneficiary_status_search'] = 'beneficiary_status_search'
+        return context  
+ 
 
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     beneficiaries = context['beneficiaries']
-    #     with transaction.atomic():
-    #         self.object = form.save()
-
-    #         if beneficiaries.is_valid():
-    #             beneficiaries.instance = self.object
-    #             beneficiaries.save()
-    #     return super(BeneficiaryUpdateView, self).form_valid(form)
+class BeneficiaryUpdateView(LoginRequiredMixin, UpdateView):
+    model = Beneficiary
+    form_class = BeneficiaryCreateForm
+    template_name = 'soc_members/beneficiary_update.html'
+    success_url = reverse_lazy('soc_members:beneficiary-admin')
+    
+class BeneficiaryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Beneficiary
+    success_url = reverse_lazy('soc_members:beneficiary-admin')
+    
+    
+    # def get_success_url(self, *args, **kwargs):
     
 
-        
-    
 
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     beneficiaries = context['beneficiaries']
-    #     with transaction.atomic():
-    #         self.object = form.save()
 
-    #         if beneficiaries.is_valid():
-    #             beneficiaries.instance = self.object
-    #             beneficiaries.save()
-    #     return super(BeneficiaryUpdateView, self).form_valid(form)
     
-    
-    # model = Member
-    # template_name = 'soc_members/beneficiary_edit.html'
-    # # form_class = BeneficiaryCreateForm
-    
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object(queryset=Member.objects.all())
-    #     super().get(request, *args, **kwargs)   
-        
-    # def post(self, request, *args, **kwargs):
-    #     self.object = self.get_object(queryset=Member.objects.all())
-    #     super().get(request, *args, **kwargs)  
-        
-    # def get_form(self, form_class=None):
-    #     return BeneficiaryInlineFormset(**self.get_form_kwargs(), instance= self.object)
-        
-    # def form_valid(self, form):
-    #     form.save()
-        
-    #     messages.add_message(
-    #         self.request,
-    #         messages.SUCCESS,
-    #         'Beneficiaries have been added'
-    #     )
-        
-    #     return HttpResponseRedirect(self.get_success_url())
-    
-    # def get_success_url(self):
-    #     return reverse('soc_members:members')
     
 
     

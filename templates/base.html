@@ -30,8 +30,8 @@
 
 <!-- Custom Theme Style -->
 <link href="{% static 'build/css/custom.min.css' %}"  rel="stylesheet">
-  
 
+<script src="https://unpkg.com/htmx.org@1.7.0" integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo" crossorigin="anonymous"></script>
 </head>
 
 <body class="nav-md">
@@ -64,7 +64,7 @@
             <div class="menu_section">
             <h3 style="color: rgb(135, 237, 245)" >General Menu</h3>
             <ul class="nav side-menu">
-                <li><a href="javascript:void(0)"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+                <li><a href="{% url 'home' %}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
                 <li><a><i class="fa fa-group"></i> Membership <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                 
@@ -76,25 +76,23 @@
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_events:meetings' %}">Meetings</a></li>
                         <li><a href="{% url 'soc_events:funerals' %} ">Funerals</a></li>
-                        <li><a href="#">Other Events</a></li>  
+                     
                     </ul>          
                 </li>
-                <li><a href="{% url 'admin:index' %}" ><i class="fa fa-users"></i>Committees</a></li>
+
+                <li><a href="{% url 'soc_committees:committees' %}" ><i class="fa fa-users"></i>Committees</a></li>
                 <li><a><i class="fa fa-edit"></i> Documents <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_documents:minutes_list' %} ">Minutes</a></li>
                         <li><a href="# ">Policies</a></li>
-                        <li><a href="#">Correspondence</a></li>  
+                       
                     </ul>          
                 </li>
 
                 <li><a><i class="fa fa-money"></i> Finances <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="general_elements.html">Member Accounts</a></li>
-                    <li><a href="media_gallery.html">Cash Flow</a></li>
-                    <li><a href="typography.html">Investements</a></li>
-                    <li><a href="icons.html">Wealth</a></li>
-                    
+                    <li><a href="media_gallery.html">Cash Flow</a></li>           
                 </ul>
                 </li>
                 
@@ -106,15 +104,37 @@
                 {% if request.user.is_superuser %}
                 <h3 style="color: rgb(135, 237, 245)">Administrator Area</h3>
                 <ul class="nav side-menu">
-                    <li><a href="{% url 'admin:index' %}" target="_blank" ><i class="fa fa-server"></i>Admin - Back Office</a></li>
-                    <li><a><i class="fa fa-laptop"></i>Admin - Front Office <span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-laptop"></i>Admin - Front-end Office <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_members:members-admin' %}">Manage Membership </a></li>
-                        <li><a href="projects.html">Manage Beneficiaries</a></li>
-                        <li><a href="project_detail.html">Manage Events</a></li>
+                        <li><a href="{% url 'soc_members:beneficiary-admin' %}">Manage Beneficiaries</a></li>
+                        <li><a href="{% url 'soc_committees:committee-admin' %}">Manage Committees</a></li>
+
+                        <li><a >Manage Events<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="{% url 'soc_events:meeting-admin' %}">Meetings</a>
+                            </li>
+                            <li class="sub_menu"><a href="{% url 'soc_events:funeral-admin' %}">Funerals</a>
+                            </li>
+                            
+                        </ul>
+                        </li>
                         <li><a href="project_detail.html">Manage Documents</a></li>
-                        <li><a href="project_detail.html">Manage Finances</a></li>
+                        <li><a >Manage Finances<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="{% url 'soc_events:meeting-admin' %}">Member Accounts</a>
+                            </li>
+                            <li class="sub_menu"><a href="{% url 'soc_events:funeral-admin' %}">Cashflow</a>
+                            </li>
+                            
+                        </ul>
+                        </li>
+                
                     </ul>
+                    </li>
+                    <li><a href="{% url 'admin:index' %}" target="_blank" ><i class="fa fa-server"></i>
+                            Admin - Back-end Office
+                        </a>
                     </li>
                     {% endif %}
                 </ul>   
@@ -253,6 +273,12 @@
     <!-- /footer content -->
         </div>
     </div>
+
+    <script>
+        document.body.addEventListener('htmx:configRequest',(event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        })
+    </script>
     <!-- jQuery -->
     <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
     <!-- Bootstrap -->
@@ -290,6 +316,15 @@
     <!-- bootstrap-daterangepicker -->
     <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+      <!-- Chart.js -->
+      <script src="{% static 'vendors/Chart.js/dist/Chart.min.js' %}"></script>
+    <!-- jQuery Sparklines -->
+    <script src="{% static 'vendors/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
+    <!-- morris.js -->
+    <script src="{% static 'vendors/raphael/raphael.min.js' %}"></script>
+    <script src="{% static 'vendors/morris.js/morris.min.js' %}"></script>
+    <!-- gauge.js -->
+    <script src="{% static 'vendors/gauge.js/dist/gauge.min.js' %}"></script>
 
     <!-- Datatables -->
     <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>

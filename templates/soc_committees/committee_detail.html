@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+| {{committee.name}}
+{% endblock title %}
+
+
+{% block content %}
+
+  <!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+        <div class="title_left">
+            <h3>Members of {{committee.name}} </h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light">
+                        <li class="breadcrumb-item"><a href="{% url 'soc_committees:committees' %}">Committees</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{committee.shortname}} Details</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        </div>
+        
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12"> 
+                <div class="x_panel">
+                    <div class="x_title">  
+                        <h2> <span class="text-info"> Term from: {{committee.term_starts}} to {{committee.term_ends}}</span>  </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <!-- start committee -->
+                
+                    <div class="row">
+                        {% for incumbent in committee.incumbents.all %}
+                        <div class="col-md-55">
+                            <div class="thumbnail">
+                            <div class="image view view-first">
+                                <img style="width: 70%; height: 100%; display: block;" 
+                                    class="img-circle img-fluid" src="{{incumbent.member.photo.url}}" alt="Picture" />
+                                <div class="mask">
+                                <p>{{incumbent.portfolio}}</p>
+                                <div class="tools tools-bottom">
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                    <a href="#"><i class="fa fa-pencil"></i></a>
+                                    <a href="#"><i class="fa fa-times"></i></a>
+                                </div>
+                                </div>
+                            </div>
+                        <div class="caption">
+                            <strong><p>Mr. {{incumbent.member.full_name}}</p> </strong> 
+
+                            <small> 
+                                <i class="fa fa-envelope user-profile-icon text-info"></i>&nbsp;&nbsp;&nbsp;
+                                <a href="mailto:{{incumbent.member.user.email}}">{{incumbent.member.user.email}}</a> 
+                            </small> <br>
+                            <small>
+                                    <i class="fa fa-phone user-profile-icon text-primary" ></i>&nbsp;&nbsp;&nbsp;
+                                    {{incumbent.member.mobile_phone}}
+
+                                </small>
+                            </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-md-12">
+                            <h2>There are no incumbents recorded for this committee yet!</h2>
+                        </div>
+                        {% endfor %}
+                        <!-- end committee list -->
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+
+{% endblock content %}

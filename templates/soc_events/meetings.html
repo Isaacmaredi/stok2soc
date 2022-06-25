@@ -1,132 +1,127 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load humanize %} 
+{% extends "base.html" %}
+{% load humanize %}
 
-{% block content %} 
+{% block title %}
+| Manage Meetings 
+{% endblock title %}
 
-<div class="content-wrapper">
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-    <div class="row mb-2">
-        <div class="col-sm-6">
-        <h1>Stok2Soc Meetings</h1>
-        </div>
-        <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{% url 'Stok2Socprofile:profiles' %}">Home</a></li>
-            <li class="breadcrumb-item active">Meetings</li>
-        </ol>
-        </div>
+
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+<div class="">
+    <div class="page-title">
+    <div class="title_left">
+        <h3>Organisational Meetings Admin New </h3>
     </div>
-    </div><!-- /.container-fluid -->
-</section>
 
-<!-- Main content -->
-<section class="content">
-
-    <!-- Default box -->
-    <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">List of Stok2Soc Events</h3>
-
-        <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-            <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-            <i class="fas fa-times"></i>
-        </button>
-        </div>
     </div>
-    <div class="card-body p-0">
-        <table class="table table-striped projects">
-            <thead>
+    
+    <div class="clearfix"></div>
+
+    <div class="row">
+    <div class="col-md-12"> 
+        <div class="x_panel">
+        <div class="x_title">  
+            <h2>Number of Meetings: </h2>
+            <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+    
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <!-- start project list -->
+            <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th style="width:10%">
+                            Date
+                        </th>
+                        <th style="width: 20%">
+                            Meeting Type
+                        </th>
+                        
+                        <th style="width: 20%" >
+                            Host/Venue
+                        </th>
+                        <th style="width: 8%;">
+                            Minutes   
+                        </th> 
+                        <th colspan="3" > 
+                            <a class="btn btn-info btn-sm btn-block"  href="{% url 'soc_events:meeting-add' %}">                    
+                                <span class="glyphicon glyphicon-plus text-light" area-hiden="true" > </span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>Add Meeting</strong>  
+                            </a> 
+                        </th>                 
+                    </tr>
+                </thead>
+                <tbody>
+                {% for meeting in meetings %}
                 <tr>
-                    <th style="width: 1%">
-                        #
-                    </th>
-                    <th style="width: 20%">
-                        Event Type
-                    </th>
-                    <th style="width: 8%">
-                        Date
-                    </th>
-                    <th style="width: 15%">
-                        Host
-                    </th>
-                    <th style="width: 30%">
-                        Venue
-                    </th>
-                   
-                
-                    {% comment %} <th style="width: 30%" class="project-actions text-right"> 
-                        <a class="btn btn-success btn-sm" href="{% url 'soc_events:meeting_create' %}">
-                            <i class="fas fa-plus-circle">
-                            </i>
-                        <strong> Add Meeting</strong>
-                        </a> 
-                    </th>                 {% endcomment %}
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-            {% for meeting in meetings %}
-                    <td>
-                        {{ meeting.id}}
-                    </td>
-                    <td>
-                        <a href="{% url 'soc_events:meeting' meeting.id %}">
+                        <td style="width: 1%">
+                            {{ forloop.counter}}
+                        </td>
+                        <td style="width:10%">
+                            {{meeting.date|date:'d M Y'}}
+                        </td>
+                        <td style="width: 20%">
                             {{meeting.meeting_type}}
-                        </a>
-                    </td>
-                    <td>
-                        {{meeting.date}}
-                    </td>
+                        </td>
+                        
+                        <td style="width: 20%">
+                            {% if meeting.host %}
+                            {{meeting.host}}
+                            {% else %}
+                            {{meeting.alt_venue}}
+                            {% endif %}
+                        </td>
+                        
+                        <td>
+                            Minutes
+                        </td>
+                        
+                        
+                        <td style="width: 10%">
+                            <a href="{% url 'soc_events:meeting-admin-detail' meeting.id %}" >
+                                <span class="glyphicon glyphicon-info-sign text-info"></span> View Attendance
+                            </a>
+                        </td>
+                        <td style="width: 5%">
+                            <a href="{% url 'soc_events:meeting-update' meeting.id %}" >
+                                <span class="glyphicon glyphicon-edit text-primary" ></span> Edit 
+                            </a>
+                        </td>
+        
+                        <td style="width: 5%">
+                            <a href="{% url 'soc_events:meeting-delete' meeting.id %}" >
+                                <span class="glyphicon glyphicon-trash text-danger" area-hiden="true" > </span> Delete
+                            </a>
+                        </td>
+                        
+                        {% empty %} 
+                        <th colspan="8" class="text-center">No meetings recorded yet!</th colspan="8">
+                    </tr> 
 
-                    <td>
+            {% endfor %}
+                </tbody>
+            </table>
+            <!-- end project list -->
 
-                    {% if meeting.host.full_name %}
-                    {{meeting.host.full_name}}
-                    {% else %}
-                    Executive Committee
-                    {% endif %}
-                    </td>  
-                    
-                    
-                    <td>
-                        {% if meeting.host.address %}
-                        {{meeting.host.address}}
-                        {% else %}
-                        {{meeting.alt_venue}}
-                        {% endif %} 
-                    </td>
-                    <td class="project-actions text-right"> 
-                        {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'soc_events:meeting' meeting.id %}">
-                            <i class="fas fa-folder">
-                            </i>
-                            View Details
-                        </a> {% endcomment %}
-                        <a class="btn btn-info btn-sm" href="{% url 'soc_events:meeting' meeting.id %}">
-                            <i class="fas fa-pencil-alt">
-                            </i>
-                        Attendance Register
-                        </a> 
-                    
-                            
-                    </td>
-                </tr>   
-        {% endfor %}
-            </tbody>
-        </table>
+        </div>
+        </div>
     </div>
-    <!-- /.card-body -->
     </div>
-    <!-- /.card -->
-
-</section>
-<!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+</div>
+<!-- /page content -->
 
-{% endblock %}
+
+{% endblock content %}
