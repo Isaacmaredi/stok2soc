@@ -78,14 +78,15 @@
                         
                         <td style="width: 20%">
                             {% if meeting.host %}
-                            {{meeting.host}}
+                            {{meeting.host.address}}
                             {% else %}
                             {{meeting.alt_venue}}
                             {% endif %}
-                        </td>
-                        
-                        <td>
-                            Minutes
+                        </td>                 
+                        <td style="width: 10%">
+                            <a href="{{meeting.meeting.doc_file.url}}" target="_blank">
+                            <span class="glyphicon glyphicon-save text-primary" ></span> Download Minutes
+                        </a>
                         </td>
                         
                         

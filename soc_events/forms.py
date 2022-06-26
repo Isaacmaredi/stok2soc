@@ -19,8 +19,7 @@ class MeetingCreateForm(ModelForm):
         
 
         widgets = {
-            'date':DateInput(attrs={'placeholder':'yyyy-mm-dd'}), 
-            'host':forms.TextInput(attrs= {'placeholder':'Select hosting member'}), 
+            'date':DateInput(attrs={'placeholder':'yyyy-mm-dd'}),  
         } 
     
     def __init__(self, *args, **kwargs):

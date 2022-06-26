@@ -82,14 +82,18 @@
                             {% endif %}
                         </td>
                         
-                        <td>
-                            Minutes
-                        </td>                    
-                        <td style="width: 15%;">
+                        <td style="width: 10%">
+                            <a href="{{meeting.meeting.doc_file.url}}" target="_blank">
+                            <span class="glyphicon glyphicon-save text-primary" ></span> Download Minutes
+                        </a>
+                        </td>
+                        
+                        
+                        <td style="width: 10%">
                             <a href="{% url 'soc_events:meeting' meeting.id %}" >
                                 <span class="glyphicon glyphicon-info-sign text-info"></span> View Attendance
                             </a>
-                        </td>    
+                        </td>
                         {% empty %} 
                         <th colspan="8" class="text-center">No meetings recorded yet!</th colspan="8">
                     </tr> 
