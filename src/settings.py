@@ -154,5 +154,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 try:
     from .local_settings import *
-except:
+except ImportError:
     pass
