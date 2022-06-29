@@ -38,4 +38,4 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
 admin.site.site_header ='Stok2Soc Admin Portal' 
-admin.site.index_title ='Manage the Stock2Soc Portal'
+admin.site.index_title ='Manage the Stok2Soc Portal'
