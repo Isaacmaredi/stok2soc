@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     #My Apps
     'soc_accounts',
-    'soc_beneficiaries',
+
     'soc_committees',
     'soc_main',
     'soc_members',

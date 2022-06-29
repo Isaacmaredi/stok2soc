@@ -26,7 +26,6 @@ urlpatterns = [
     path('soc_dash', include('soc_dash.urls'), name='soc_dash'),  
     path('', include('soc_accounts.urls'), name='soc_accounts'),
     path('soc_members/', include('soc_members.urls'), name='soc_members'),
-    path('soc_beneficiaries/', include('soc_beneficiaries.urls'), name='soc_beneficiaries'),
     path('soc_events/', include('soc_events.urls'), name='soc_events'),
     path('soc_documents/', include('soc_documents.urls'), name='soc_documents'),
     path('soc_committees/', include('soc_committees.urls'), name='soc_committees'),
