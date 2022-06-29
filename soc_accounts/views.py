@@ -3,13 +3,15 @@ from django.shortcuts import render, redirect
 from django.contrib import auth, messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-
 from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
 from django.contrib.auth.models import User
 
+from django.template import RequestContext
+
 # Create your views here.
 def register(request):
+    
     if request.method == "POST":
         first_name = request.POST.get('first_name') 
         last_name = request.POST.get('last_name')
@@ -54,7 +56,7 @@ def login(request):
             }
         
             messages.success(request, 'You are now logged in')
-            return redirect('home')
+            return redirect('soc_dash:dashboard')
         else:
             messages.error(request, 'Invalid credentials')
             return redirect('soc_accounts:login')

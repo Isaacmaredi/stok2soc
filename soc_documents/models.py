@@ -12,7 +12,7 @@ class Minutes(models.Model):
     def __str__(self):
         return f'Minutes - {self.title}'
     
-    class Meta:
+    class Meta: 
         verbose_name_plural = 'Minutes'
         ordering = ('-id',)
         

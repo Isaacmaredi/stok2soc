@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {% block title %}
-| Manage Meetings 
+| Member Logins
 {% endblock title %}
 
 
@@ -13,7 +13,7 @@
 <div class="">
     <div class="page-title">
     <div class="title_left">
-        <h3>Organisational Meetings </h3>
+        <h3> </h3>
     </div>
 
     </div>
@@ -24,7 +24,7 @@
     <div class="col-md-12"> 
         <div class="x_panel">
         <div class="x_title">  
-            <h2>Number of Meetings: </h2>
+            <h2> <strong>Last login date and time  by members</strong> </h2> 
             <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
@@ -44,64 +44,54 @@
                             #
                         </th>
                         <th style="width:10%">
-                            Date
+                            Member Full Names
+                        </th> 
+                        <th style="width: 20%" >
+                            Last Login Date & Time
                         </th>
                         <th style="width: 20%">
-                            Meeting Type
-                        </th>
-                        
-                        <th style="width: 20%" >
-                            Host/Venue
-                        </th>
-                        <th style="width: 8%;">
-                            Minutes   
+                            User Name
                         </th> 
-                        <th style="width: 15%;""> 
-                        Attendance Details
-                        </th>                
+                        <th style="width: 8%;">
+                            User Persmission Status  
+                        </th> 
+            
                     </tr>
                 </thead>
                 <tbody>
-                {% for meeting in meetings %}
+                {% for member in members %}
                 <tr>
                         <td style="width: 1%">
-                            {{ forloop.counter}}
+                            {{ forloop.counter}}  
                         </td>
-                        <td style="width:10%">
-                            {{meeting.date|date:'d M Y'}}
-                        </td>
-                        <td style="width: 20%">
-                            {{meeting.meeting_type}}
-                        </td>
-                        
-                        <td style="width: 20%">
-                            {% if meeting.host %}
-                            {{meeting.host}}
-                            {% else %}
-                            {{meeting.alt_venue}}
-                            {% endif %}
-                        </td>
-                        
-                        <td style="width: 10%">
-                            <a href="{{meeting.meeting.doc_file.url}}" target="_blank">
-                            <span ></span><i class="fa fa-file-pdf-o text-danger"></i> Download Minutes</span>
-                        </a>
-                        </td>
-                        
-                        
-                        <td style="width: 10%">
-                            <a href="{% url 'soc_events:meeting' meeting.id %}" >
-                                <span class="glyphicon glyphicon-info-sign text-info"></span> View Attendance
+                        <th style="width: 10%" >
+                            <a href="{% url 'soc_members:member-admin-detail' member.id %}" >
+                                <span class="glyphicon glyphicon-info-sign text-info"></span> 
+                                {{member.full_name}}
                             </a>
+                        </th>
+                        <th style="width:10%">
+                            {{member.user.last_login|date:'d M Y - h m s'}}
+                        </th>
+                        <td style="width: 20%">
+                            {{member.user.username}}
                         </td>
+                        <td style="width: 20%">
+                            {% if member.user.is_superuser%}
+                            Admin Superuser
+                            {% elif member.user.is_staff%}
+                            Limited Admin User
+                            {% else %}
+                            Regular Guest User
+                            {% endif %}
+                        </td>             
                         {% empty %} 
-                        <th colspan="8" class="text-center">No meetings recorded yet!</th colspan="8">
+                        <th colspan="8" class="text-center">No logins of user members recorded yet!</th>
                     </tr> 
-
             {% endfor %}
                 </tbody>
             </table>
-            <!-- end project list -->
+            
 
         </div>
         </div>

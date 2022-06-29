@@ -14,13 +14,15 @@
     </div>
 
     <div class="title_right">
-        <div class="col-md-5 col-sm-5  form-group pull-right top_search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
-        </div>
+        <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+        
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light">
+                    <li class="breadcrumb-item"><a href="{% url 'soc_dash:dashboard' %}">Home</a></li>
+                    <li class="breadcrumb-item"> <a href="{% url 'soc_members:members' %} ">Memberhip List</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page">My Member Profile</li>
+                </ol>
+            </nav>
         </div>
     </div>
     </div>
@@ -123,20 +125,12 @@
             <!-- end of user-activity-graph -->
 
             <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                <li role="presentation" class=""><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">{{my_profile}} Beneficiaries</a>
-                </li>
-                <li role="presentation" class="active"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">{{member}} Beneficiaries</a>
-                </li>
-                <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
-                </li>
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+                <span class="ml-2 text-center">
+                <h3> Total Beneficiaries:  <span class="text-success">{{my_profile.beneficiaries.all.count}} </span></h3> 
+                </span>
+                    <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
 
-                    <!-- start recent activity -->
-                    <ul class="messages">
-                    
+                        <!--Beneficiaries-->
                         <table class="data table table-striped no-margin">
                             <thead>
                                 <tr>
@@ -145,11 +139,12 @@
                                 <th>Date of Birth</th>
                                 <th class="hidden-phone">Type</th>
                                 <th>Status</th>
+                                <th>Update</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            
                                 {% for beneficiary in my_profile.beneficiaries.all %}
-        
                                 <tr>
                                 <td>{{forloop.counter}}</td>
                                 <td>{{beneficiary.full_name}}</td>
@@ -158,103 +153,33 @@
                                 <td class="vertical-align-mid">
                                     <div class="progress">
                                         {% if beneficiary.beneficiary_status == 'Active' %}
-                                        <div class="progress-bar progress-bar-success" data-transitiongoal="100">Active</div>
+                                        <div class="progress-bar progress-bar-success" data-transitiongoal="60">Active</div>
                                         {% elif  beneficiary.beneficiary_status == 'Deceased' %}
-                                        <div class="progress-bar progress-bar-danger" data-transitiongoal="100">Deceased</div>
+                                        <div class="progress-bar progress-bar-danger" data-transitiongoal="60">Deceased</div>
                                         {% else %}
-                                        <div class="progress-bar progress-bar-info" data-transitiongoal="100">Inactive</div>
+                                        <div class="progress-bar progress-bar-info" data-transitiongoal="60">Inactive</div>
                                         {% endif %}
                                     </div>
         
                                 </td>
+                                <td>
+                                
+                                </td>
                                 </tr>
                                 
-                                {% endfor %}         
-                            </tbody>
-                            </table>
-
-                    </ul>
-                    <!-- end recent activity -->
-
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-
-                    <!-- start user projects -->
-                    
-
-                    <li>
-                        <img src="images/img.jpg" class="avatar" alt="Avatar">
-                        <div class="message_date">
-                        <h3 class="date text-info">24</h3>
-                        <p class="month">May</p>
-                        </div>
-                        <div class="message_wrapper">
-                        <h4 class="heading">Desmond Davison</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                            <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                            <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="images/img.jpg" class="avatar" alt="Avatar">
-                        <div class="message_date">
-                        <h3 class="date text-error">21</h3>
-                        <p class="month">May</p>
-                        </div>
-                        <div class="message_wrapper">
-                        <h4 class="heading">Brian Michaels</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                            <span class="fs1" aria-hidden="true" data-icon=""></span>
-                            <a href="#" data-original-title="">Download</a>
-                        </p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="images/img.jpg" class="avatar" alt="Avatar">
-                        <div class="message_date">
-                        <h3 class="date text-info">24</h3>
-                        <p class="month">May</p>
-                        </div>
-                        <div class="message_wrapper">
-                        <h4 class="heading">Desmond Davison</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                            <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                            <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="images/img.jpg" class="avatar" alt="Avatar">
-                        <div class="message_date">
-                        <h3 class="date text-error">21</h3>
-                        <p class="month">May</p>
-                        </div>
-                        <div class="message_wrapper">
-                        <h4 class="heading">Brian Michaels</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                            <span class="fs1" aria-hidden="true" data-icon=""></span>
-                            <a href="#" data-original-title="">Download</a>
-                        </p>
-                        </div>
-                    </li>
-                    <!-- end user projects -->
-
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                    <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                    photo booth letterpress, commodo enim craft beer mlkshk </p>
-                </div>
-                </div>
-            </div>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center"><strong >No beneficiaries for this member yet!</strong> </td> 
+                                </tr>
+                                {% endfor %}  
+                                <tr>
+                                    <td colspan="6" class="text-center"></td>
+                                </tr>  
+                                            
+                            </tbody>                 
+                        </table>
+                    </div>
+                </di
             </div>
         </div>
         </div>

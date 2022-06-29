@@ -1,4 +1,5 @@
 from distutils.log import Log
+from multiprocessing import context
 from re import M
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -191,10 +192,19 @@ class BeneficiaryDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('soc_members:beneficiary-admin')
     
     
-    # def get_success_url(self, *args, **kwargs):
+class MemberLoginAdminView(LoginRequiredMixin,ListView):
+    model = Member
+    context_object_name = 'members'
+    order_by = ['-object.user.last_login']
+    template_name = 'soc_members/member_logins.html'
+
     
-
-
+    def get_context_data(self, *args, **kwargs):
+        context = super(MemberLoginAdminView, self).get_context_data(*args, **kwargs)
+        context['total'] = Member.objects.all().count()
+        context['order'] = Member.objects.all().order_by('self.object__last_login')
+        return context
+        
 
     
     

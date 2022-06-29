@@ -130,7 +130,7 @@ USE_TZ = True
 
 LOGIN_URL = 'soc_accounts:login'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'soc_dash:dashboard'
 
 
 

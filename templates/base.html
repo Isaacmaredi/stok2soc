@@ -40,19 +40,26 @@
     <div class="col-md-3 left_col menu_fixed">
         <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a href="{% url 'home' %}" class="site_title"><i class="fa fa-paw"></i> <span>Stok2Soc</span></a>
+        
+            <a href="" class="site_title">
+                <img src="{% static 'images/stok2soc.png' %}" alt=""> 
+                <span>Stok2Soc</span>
+            </a>
         </div>
 
         <div class="clearfix"></div>
 
         <!-- menu profile quick info -->
         <div class="profile clearfix">
-            <div class="profile_pic">
-            <img src="{{request.user.member.photo.url}}" alt="..." class="img-circle profile_img">
-            </div>
             <div class="profile_info">
-            <span>Logged in as,</span>
-            <h2>{{request.user.username}}</h2>
+                Logged in as <br>
+            <span class="text-warning">  
+                {% if user.is_superuser  %}
+                <strong >Admin User</strong>
+                {% else %}
+                <strong>Regular User</strong>
+                {% endif %}
+            </span>    
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -62,9 +69,9 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-            <h3 style="color: rgb(135, 237, 245)" >General Menu</h3>
+            <h3 style="color: rgb(135, 237, 245)" >All Users Menu</h3>
             <ul class="nav side-menu">
-                <li><a href="{% url 'home' %}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+                <li><a href="{% url 'soc_dash:dashboard' %}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
                 <li><a><i class="fa fa-group"></i> Membership <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                 
@@ -76,16 +83,14 @@
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_events:meetings' %}">Meetings</a></li>
                         <li><a href="{% url 'soc_events:funerals' %} ">Funerals</a></li>
-                     
                     </ul>          
-                </li>
 
-                <li><a href="{% url 'soc_committees:committees' %}" ><i class="fa fa-users"></i>Committees</a></li>
-                <li><a><i class="fa fa-edit"></i> Documents <span class="fa fa-chevron-down"></span></a>
+                <li><a href="{% url 'soc_committees:committees' %}" ><i class="fa fa-institution (allias)"></i>Committees</a></li>
+                <li><a><i class="fa fa-folder"></i> Documents <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_documents:minutes_list' %} ">Minutes</a></li>
                         <li><a href="# ">Policies</a></li>
-                       
+                    
                     </ul>          
                 </li>
 
@@ -102,14 +107,14 @@
                 <div class="menu_section">
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <h3 style="color: rgb(135, 237, 245)">Administrator Area</h3>
+                <h3 style="color: rgb(135, 237, 245)">Admin User Area</h3>
                 <ul class="nav side-menu">
                     <li><a><i class="fa fa-laptop"></i>Admin - Front-end Office <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_members:members-admin' %}">Manage Membership </a></li>
                         <li><a href="{% url 'soc_members:beneficiary-admin' %}">Manage Beneficiaries</a></li>
                         <li><a href="{% url 'soc_committees:committee-admin' %}">Manage Committees</a></li>
-
+                        <li><a href="{% url 'soc_members:member-logins' %}">View Member Logins</a></li>
                         <li><a >Manage Events<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li class="sub_menu"><a href="{% url 'soc_events:meeting-admin' %}">Meetings</a>
@@ -169,20 +174,24 @@
                 </div>
             <nav class="nav navbar-nav">
                 <ul class=" navbar-right">
+                    
                     <li class="nav-item dropdown open" style="padding-left: 15px;">
                         <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                         <img src="{{request.user.member.photo.url}}" alt="">
-                         <span class="text-light"> Welcome, {{request.user.first_name|upper}}</span>  
+                        <span class="text-light"> Welcome, {{request.user.first_name|upper}}</span>  
                         </a>
+                        {% if request.user.is_authenticated %}
                         <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown" ">
-                        <a class="dropdown-item"  href="{% url 'soc_members:my-profile-detail' request.user.pk %} ">  <i> my</i>Profile</a>
+                            <a class="dropdown-item"  href="{% url 'soc_members:my-profile-detail' user.pk %} ">  
+                                <i> my</i>Profile
+                            </a>
                             <a class="dropdown-item"  href="{% url 'soc_finance:member-accounts' %}">
-                            <span class="badge bg-red pull-right"></span>
                             <span> <i> my</i>Finances</span>
                             </a>
-                        <a class="dropdown-item"  href="javascript:;">Change Password</a>
-                        <a class="dropdown-item"  href="{% url 'soc_accounts:login' %}"><i class="fa fa-sign-out pull-right"></i> Logout</a>
+                            <a class="dropdown-item"  href="javascript:;">Change Password</a>
+                            <a class="dropdown-item"  href="{% url 'soc_accounts:login' %}"><i class="fa fa-sign-out pull-right"></i> Logout</a>
                         </div>
+                        {% endif %}
                     </li> 
                 </ul>
             </nav>

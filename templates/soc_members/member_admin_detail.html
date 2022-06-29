@@ -97,76 +97,73 @@
                 <span class="ml-2 text-center">
                 <h3> Total Beneficiaries:  <span class="text-success">{{member.beneficiaries.all.count}} </span></h3> 
                 </span>
-                <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+                    <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
 
-                    <!--Beneficiaries-->
-                    <table class="data table table-striped no-margin">
-                        <thead>
-                            <tr>
-                            <th>#</th>
-                            <th>Beneficiary Name</th>
-                            <th>Date of Birth</th>
-                            <th class="hidden-phone">Type</th>
-                            <th>Status</th>
-                            <th>Update</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        
-                            {% for beneficiary in member.beneficiaries.all %}
-                            <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td>{{beneficiary.full_name}}</td>
-                            <td>{{beneficiary.birth_date|date:"d F Y"}}</td>
-                            <td class="hidden-phone">{{beneficiary.beneficiary_type}}</td>
-                            <td class="vertical-align-mid">
-                                <div class="progress">
-                                    {% if beneficiary.beneficiary_status == 'Active' %}
-                                    <div class="progress-bar progress-bar-success" data-transitiongoal="60">Active</div>
-                                    {% elif  beneficiary.beneficiary_status == 'Deceased' %}
-                                    <div class="progress-bar progress-bar-danger" data-transitiongoal="60">Deceased</div>
-                                    {% else %}
-                                    <div class="progress-bar progress-bar-info" data-transitiongoal="60">Inactive</div>
-                                    {% endif %}
-                                </div>
-    
-                            </td>
-                            <td>
-                                <a href="{% url 'soc_members:beneficiary-update' beneficiary.id %}" >
-                                    <span class="glyphicon glyphicon-edit text-info" ></span> Edit 
-                                </a> 
-                            </td>
-                            </tr>
+                        <!--Beneficiaries-->
+                        <table class="data table table-striped no-margin">
+                            <thead>
+                                <tr>
+                                <th>#</th>
+                                <th>Beneficiary Name</th>
+                                <th>Date of Birth</th>
+                                <th class="hidden-phone">Type</th>
+                                <th>Status</th>
+                                <th>Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             
-                            {% empty %}
-                            <tr>
-                                <td colspan="6" class="text-center"><strong >No beneficiaries for this member yet!</strong> </td> 
-                            </tr>
-                            {% endfor %}  
-                            <tr>
-                                <td colspan="6" class="text-center"></td>
-                            </tr>  
-                            <tr> 
-                                <td colspan="4"></td>
-                                <td colspan="1" class="text-center"> 
-
-                                    <a href="{% url 'soc_members:members-admin' %}">
-                                        <button class="btn btn-secondary btn-block">Membership List</button>
-                                    </a>                                
+                                {% for beneficiary in member.beneficiaries.all %}
+                                <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{beneficiary.full_name}}</td>
+                                <td>{{beneficiary.birth_date|date:"d F Y"}}</td>
+                                <td class="hidden-phone">{{beneficiary.beneficiary_type}}</td>
+                                <td class="vertical-align-mid">
+                                    <div class="progress">
+                                        {% if beneficiary.beneficiary_status == 'Active' %}
+                                        <div class="progress-bar progress-bar-success" data-transitiongoal="60">Active</div>
+                                        {% elif  beneficiary.beneficiary_status == 'Deceased' %}
+                                        <div class="progress-bar progress-bar-danger" data-transitiongoal="60">Deceased</div>
+                                        {% else %}
+                                        <div class="progress-bar progress-bar-info" data-transitiongoal="60">Inactive</div>
+                                        {% endif %}
+                                    </div>
+        
                                 </td>
-                                <td colspan="1" class="text-center"> 
-
-                                    <a href="{% url 'soc_members:create-beneficiary' member.id %}">
-                                        <button class="btn btn-primary">Add Beneficiaries</button>
-                                    </a>                                
+                                <td>
+                                    <a href="{% url 'soc_members:beneficiary-update' beneficiary.id %}" >
+                                        <span class="glyphicon glyphicon-edit text-info" ></span> Edit 
+                                    </a> 
                                 </td>
-                            </tr>
+                                </tr>
+                                
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center"><strong >No beneficiaries for this member yet!</strong> </td> 
+                                </tr>
+                                {% endfor %}  
+                                <tr>
+                                    <td colspan="6" class="text-center"></td>
+                                </tr>  
+                                <tr> 
+                                    <td colspan="4"></td>
+                                    <td colspan="1" class="text-center"> 
 
-                        
-                        </tbody>
-                        
+                                        <a href="{% url 'soc_members:members-admin' %}">
+                                            <button class="btn btn-secondary btn-block">Membership List</button>
+                                        </a>                                
+                                    </td>
+                                    <td colspan="1" class="text-center"> 
+
+                                        <a href="{% url 'soc_members:create-beneficiary' member.id %}">
+                                            <button class="btn btn-primary">Add Beneficiaries</button>
+                                        </a>                                
+                                    </td>
+                                </tr>                         
+                            </tbody>                 
                         </table>
-                </div>
+                    </div>
                 </div>
             </div>
             </div>

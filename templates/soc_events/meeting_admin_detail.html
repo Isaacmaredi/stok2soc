@@ -20,7 +20,7 @@
 			
 				<nav aria-label="breadcrumb">     
 					<ol class="breadcrumb bg-light">
-						<li class="breadcrumb-item"><a href="{% url 'home' %}">Membership</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'soc_members:members-admin' %}">Membership</a></li>
 						<li class="breadcrumb-item"> <a href="{% url 'soc_events:meeting-admin' %} ">Meetings</a> </li>
                         <li class="breadcrumb-item active" aria-current="page">{{meeting.meeting_type}}</li>
 					</ol>

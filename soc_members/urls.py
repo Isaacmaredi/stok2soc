@@ -14,6 +14,7 @@ urlpatterns = [
     path('my_profile_detail/<int:pk>/', views.MyProfileDetailView.as_view(), name='my-profile-detail'),
     path('member/<int:pk>/edit/', views.MemberUpdateView.as_view(), name='member-edit'),
     path('members_admin/<int:pk>/', views.MemberAdminDetailView.as_view(), name='member-admin-detail'),
+    path('member_logins/',views.MemberLoginAdminView.as_view(), name='member-logins'),
     path('beneficiary_admin/', views.BeneficiaryAdminListView.as_view(), name='beneficiary-admin'), 
     path('beneficiary_admin/add/', views.BeneficiaryCreateView.as_view(), name='beneficiary-add'),
     path('beneficiary_admin/<int:pk>/update/', views.BeneficiaryUpdateView.as_view(),name='beneficiary-update'),
