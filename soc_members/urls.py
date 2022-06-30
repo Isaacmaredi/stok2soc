@@ -21,4 +21,4 @@ urlpatterns = [
     path('beneficiary_admin/<int:pk>/delete/', views.BeneficiaryDeleteView.as_view(),name='beneficiary-delete'),
     path('member/<int:pk>/create_beneficiary/', views.create_beneficiaries, name='create-beneficiary'),
     path('members/beneficiaries/', views.BeneficiaryListView.as_view(), name='beneficiaries'),   
-]
+] 
