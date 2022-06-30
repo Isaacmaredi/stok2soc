@@ -74,7 +74,7 @@ BeneficiaryFormset = inlineformset_factory(Member,
                                                 Beneficiary, 
                                                 BeneficiaryCreateForm,
                                                 fields='__all__',
-                                                extra = 2)
+                                                extra = 6)
 class BeneficiaryAddForm(ModelForm):
     class Meta:
         model = Beneficiary

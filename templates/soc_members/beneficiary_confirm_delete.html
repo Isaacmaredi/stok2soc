@@ -1,50 +1,80 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 
-{% block title %}
-Confirm Delete 
-{% endblock title %}
+{% block title %} | Delete Beneficiary {% endblock title %}
+
 
 {% block content %}
 <!-- page content -->
-<div class="right_col" role="main">
-    <div class="">
+    <div class="right_col" role="main">
+        <div class="">
         <div class="page-title">
-        <div class="title_right">
-          <h3>Delete Beneficiary! </h3>  <p>Are you sure you want to delete <strong>{{object.member}}'s</strong>  beneficary from the list?</p>
-            
+            <div class="title_left">
+            <h3 >Delete Beneficiary! <small></small></h3>
+            </div>
+        
         </div>
-
-        </div>
-
+        
         <div class="clearfix"></div>
 
         <div class="row">
+            <div class="col-md-12">
+            <div class="x_panel">
+            <div class="x_title">
+                
+                
+            <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <!-- start project list -->
             <div class="col-md-12 col-sm-12  ">
-                <div class="x_panel">
-                <div class="mx-auto">
-                    <div class="x_content">
-                    This will permanently remove <strong>{{object.full_name}}</strong> 
-                    from the list of beneficiaries in the database!
+            <div class="x_panel">
+            <div class="x_title">
+                
+                
+            <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <div class="bs-example" data-example-id="simple-jumbotron">
+                    <div class="jumbotron ">
+                        <h3 class="text-center"> <span class="glyphicon glyphicon-info-sign text-warning"></span>&nbsp;&nbsp; 
+                            Are you sure you want to delete <strong>{{object.member}}'s</strong>  beneficary from the list?</h3>
+                            <br>
+                        <p class="text-center">This will permanently remove <strong class="text-danger">{{object.full_name}}</strong> 
+                            from the list of beneficiaries in the database!
+                        </p>
                     </div>
                     <br>
-                    <br>
+                    
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <p class="text-center"> 
+                            <input type="submit" class="btn btn-danger" value="Confirm"/>
+                            <a class="btn btn-secondary" href="{% url 'soc_members:beneficiary-admin' %}">Cancel</a>
+                        </p>     
+                    </form>
                     
                 </div>
-                
+
             </div>
-            <br><br>
-            <form action="" method="POST">
-                {% csrf_token %}
-                <p> 
-                    <input type="submit" class="btn btn-danger" value="Confirm"/>
-                    <a class="btn btn-secondary" href="{% url 'soc_members:beneficiary-admin' %}">Cancel</a>
-                </p>     
-            </form>
             </div>
         </div>
-</div>
-</div>
-<!-- /page content -->
+                <!-- end project list -->
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- /page content -->
 
 {% endblock content %}
+
+
+
+
+
+

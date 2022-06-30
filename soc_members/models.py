@@ -78,7 +78,7 @@ class Member(models.Model):
         return reverse('soc_members:member-admin-detail', kwargs= {'pk':self.pk})
     
     class Meta:
-        ordering=('user_id',)
+        ordering=('-user_id',)
     
 class Beneficiary(models.Model):
     member = models.ForeignKey(Member,on_delete=models.CASCADE, 
@@ -115,4 +115,4 @@ class Beneficiary(models.Model):
 
     
     def get_absolute_url(self):
-        return reverse('soc_members:member', kwargs= {'pk':self.member_pk})
+        return reverse('soc_members:member-admin-detail', kwargs= {'pk':self.member_pk})

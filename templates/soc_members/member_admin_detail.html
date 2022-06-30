@@ -155,10 +155,17 @@
                                         </a>                                
                                     </td>
                                     <td colspan="1" class="text-center"> 
-
+                                        {% if not beneficiary %}
                                         <a href="{% url 'soc_members:create-beneficiary' member.id %}">
                                             <button class="btn btn-primary">Add Beneficiaries</button>
-                                        </a>                                
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'soc_members:create-beneficiary' member.id %}">
+                                            <button class="btn btn-primary">Add More Beneficiaries</button>
+                                        </a>
+                                        {% endif %}
+
+                                                                      
                                     </td>
                                 </tr>                         
                             </tbody>                 

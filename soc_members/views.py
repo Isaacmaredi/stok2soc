@@ -140,9 +140,9 @@ def create_beneficiaries(request, pk):
     formset = BeneficiaryFormset(request.POST or None)
     if request.method == "POST":
         if formset.is_valid():
-            formset.instance = member
+            formset.instance = member 
             formset.save()
-            return redirect ('soc_members:member', pk=member.id)
+            return redirect ('soc_members:member-admin-detail', pk=member.pk)
         
     context = {
         'formset': formset, 
