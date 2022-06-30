@@ -121,6 +121,7 @@ class MyProfileDetailView(LoginRequiredMixin, UserPassesTestMixin , DetailView):
 class BeneficiaryListView(LoginRequiredMixin,ListView):
     model = Beneficiary
     context_object_name = 'beneficiaries'
+    paginate_by = 8
 
     def get_context_data(self, *args, **kwargs):
         context = super(BeneficiaryListView, self).get_context_data(*args, **kwargs )
