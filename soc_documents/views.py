@@ -51,7 +51,7 @@ def upload_minutes(request):
 
 
 # Policy views 
-class PolicyListView(ListView):
+class PolicyListView(ListView):  
     model = Policy
     context_object_name = 'policies'
     template_name = 'soc_documents/policy.html'
@@ -80,7 +80,7 @@ def upload_policy(request):
             instance = form.save(commit=False)
             instance.uploaded_by = request.user
             instance.save()
-            return redirect('soc_documents:policy_list')
+            return redirect('soc_documents:policy-admin')
     else:
         form = PolicyForm()
     

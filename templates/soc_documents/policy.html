@@ -12,15 +12,17 @@
     </div>
 
     <div class="title_right">
-    <div class="col-md-5 col-sm-5   form-group pull-right top_search">
-        <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for...">
-        <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button">Go!</button>
-        </span>
+        <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+        
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light">
+                    <li class="breadcrumb-item"><a href="{% url 'soc_dash:dashboard' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Policy Documents</li>
+                </ol>
+            </nav>
         </div>
     </div>
-    </div>
+    
 </div>
 
 <div class="clearfix"></div>
@@ -40,22 +42,22 @@
             
             <tr>
                 <th style="width: 1%">#</th>
-                <th style="width: 20%">Meeting </th>
+                <th style="width: 25%%">Policy Type </th>
                 <th>Date</th>
                 <th>Uploaded By</th>
-                <th>Download Document</th>
+                <th style="width:25%">Download Document</th>
                 
-            </tr>
+            </tr>  
             </thead> 
             <tbody>
                 {% for policy in policies %}
             <tr>
-                <td>{{forloop.count}}</td>
+                <td>{{forloop.count}}</td>  
                 <td>
-                <a href="#"> {{policy.title}}</a>
+                <a href="#"> {{policy.name}}</a>
                 </td>
                 <td>
-                {{policy.date|date:'d F Y'}}
+                {{policy.date_uploaded|date:'d F Y'}}
                 </td>
                 <td class="project_progress">
                 {{policy.uploaded_by}}
@@ -63,10 +65,15 @@
             
                 <td>
                 <a href="{{policy.doc_file.url}}" target="_blank" >
-                    <button class="btn btn-primary"><i class="fa fa-download"></i>  Download Policy </button>  
+                    <button class="btn btn-info btn-block" > <i class="glyphicon glyphicon-download-alt"></i> Download document </button>  
                 </a>
         
                 </td>
+                {% empty %}
+                <td class="text-center" colspan="5">
+                    <strong> No policy documents available yet!</strong>
+                </td>
+
             </tr>
             {% endfor %}
             </tbody>

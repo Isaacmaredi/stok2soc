@@ -1,6 +1,7 @@
 from distutils.log import Log
 from multiprocessing import context
 from re import M
+import re
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.urls import reverse, reverse_lazy
@@ -37,7 +38,9 @@ class MemberListView (LoginRequiredMixin, ListView):
     context_object_name ='members'
     form_class = MemberSearchForm
     template_name = 'soc_members/member_list.html'
-    paginate_by = 10
+    paginate_by = 8
+    
+
 
     def get_queryset(self):  
         member_query = self.request.GET.get('q', default="") 
@@ -122,12 +125,21 @@ class BeneficiaryListView(LoginRequiredMixin,ListView):
     model = Beneficiary
     context_object_name = 'beneficiaries'
     paginate_by = 8
+    
+    def get_queryset(self):
+        query = self.request.GET.get('q', default="")  
+        beneficiary_search = Beneficiary.objects.filter(
+            Q(full_name__icontains=query) 
+        )
+        return beneficiary_search 
 
     def get_context_data(self, *args, **kwargs):
         context = super(BeneficiaryListView, self).get_context_data(*args, **kwargs )
+        context['total'] = Beneficiary.objects.all().count()
         context['actives'] = Beneficiary.objects.filter(beneficiary_status='Active')
         context['deceased'] = Beneficiary.objects.filter(beneficiary_status='Deceased')
         context['inactives'] = Beneficiary.objects.filter(beneficiary_status='Inactive')
+        context['beneficiary_serch'] = 'beneficiary_search'
         return context
 
 class BeneficiaryCreateView(LoginRequiredMixin,CreateView):
@@ -165,12 +177,6 @@ class BeneficiaryAdminListView(LoginRequiredMixin,ListView):
         )
         return beneficiary_search 
     
-    # def get_queryset(self):
-    #     ben_query = self.request.GET.get('s', default="")
-    #     beneficiary_status_search = Beneficiary.objects.filter(
-    #         Q(beneficiary_status__icontains=ben_query))
-    #     return beneficiary_status_search
-    
     def get_context_data(self, *args, **kwargs):
         context = super(BeneficiaryAdminListView, self).get_context_data(*args, **kwargs)
         context['actives'] = Beneficiary.objects.filter(beneficiary_status='Active').count() 
@@ -178,9 +184,7 @@ class BeneficiaryAdminListView(LoginRequiredMixin,ListView):
         context['inactive'] = Beneficiary.objects.filter(beneficiary_status='Inactive').count()
         context['total'] = Beneficiary.objects.all().count()
         context['beneficiary_search'] = 'beneficiary_search'
-        # context['beneficiary_status_search'] = 'beneficiary_status_search'
         return context  
- 
 
 class BeneficiaryUpdateView(LoginRequiredMixin, UpdateView):
     model = Beneficiary

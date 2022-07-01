@@ -54,21 +54,19 @@
                 Logged in as <br>
             <span class="text-warning">  
                 {% if user.is_superuser  %}
-                <strong >Admin User</strong>
+                Admin User, {{request.user.username}}
                 {% else %}
-                <strong>Regular User</strong>
+                End User, {{request.user.username}}
                 {% endif %}
             </span>    
             </div>
         </div>
         <!-- /menu profile quick info -->
-
-        <br />
-        
+        <br />      
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-            <h3 style="color: rgb(135, 237, 245)" >All Users Menu</h3>
+            <h3 style="color: rgb(135, 237, 245)" >General User Menu</h3>
             <ul class="nav side-menu">
                 <li><a href="{% url 'soc_dash:dashboard' %}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
                 <li><a><i class="fa fa-group"></i> Membership <span class="fa fa-chevron-down"></span></a>
@@ -88,7 +86,7 @@
                 <li><a><i class="fa fa-folder"></i> Documents <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_documents:minutes_list' %} ">Minutes</a></li>
-                        <li><a href="# ">Policies</a></li>
+                        <li><a href="{% url 'soc_documents:policy_list' %}">Policies</a></li>
                     
                     </ul>          
                 </li>
@@ -106,14 +104,13 @@
                 <div class="menu_section">
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <h3 style="color: rgb(135, 237, 245)">Admin User Area</h3>
+                <h3 style="color: rgb(135, 237, 245)">Admin User Menu</h3>
                 <ul class="nav side-menu">
                     <li><a><i class="fa fa-laptop"></i>Admin - Front-end Office <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="{% url 'soc_members:members-admin' %}">Manage Membership </a></li>
                         <li><a href="{% url 'soc_members:beneficiary-admin' %}">Manage Beneficiaries</a></li>
                         <li><a href="{% url 'soc_committees:committee-admin' %}">Manage Committees</a></li>
-                        <li><a href="{% url 'soc_members:member-logins' %}">View Member Logins</a></li>
                         <li><a >Manage Events<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li class="sub_menu"><a href="{% url 'soc_events:meeting-admin' %}">Meetings</a>
@@ -141,6 +138,7 @@
                             </li>          
                         </ul>
                         </li>
+                        <li><a href="{% url 'soc_members:member-logins' %}">View Member Logins</a></li>
                 
                     </ul>
                     </li>
@@ -167,7 +165,7 @@
 
     <!-- top navigation -->
     <div class="top_nav menu_fixed">
-        <div class="nav_menu" style="background-color:#2A3F54">
+        <div class="nav_menu" >
                 <div class="nav toggle">       
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                 </div>
@@ -177,18 +175,18 @@
                     <li class="nav-item dropdown open" style="padding-left: 15px;">
                         <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                         <img src="{{request.user.member.photo.url}}" alt="">
-                        <span class="text-light"> Welcome, {{request.user.first_name|upper}}</span>  
+                        <span > Welcome, {{request.user.first_name|upper}}</span>  
                         </a>
                         {% if request.user.is_authenticated %}
-                        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown" ">
-                            <a class="dropdown-item"  href="{% url 'soc_members:my-profile-detail' user.pk %} ">  
+                        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown" style="background-color:#2A3F54" >
+                            <a class="dropdown-item text-light"  href="{% url 'soc_members:my-profile-detail' user.pk %} ">  
                                 <i> my</i>Profile
                             </a>
-                            <a class="dropdown-item"  href="{% url 'soc_finance:member-accounts' %}">
+                            <a class="dropdown-item text-light"  href="{% url 'soc_finance:member-accounts' %}">
                             <span> <i> my</i>Finances</span>
                             </a>
-                            <a class="dropdown-item"  href="javascript:;">Change Password</a>
-                            <a class="dropdown-item"  href="{% url 'soc_accounts:login' %}"><i class="fa fa-sign-out pull-right"></i> Logout</a>
+                            <a class="dropdown-item text-light"  href="javascript:;">Change Password</a>
+                            <a class="dropdown-item text-light"  href="{% url 'soc_accounts:login' %}"><i class="fa fa-sign-out pull-right"></i> Logout</a>
                         </div>
                         {% endif %}
                     </li> 

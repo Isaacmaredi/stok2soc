@@ -32,7 +32,7 @@ class Policy(models.Model):
     doc_file = models.FileField(upload_to='minutes/%Y/%F')
     uploaded_by = models.CharField(max_length= 200, blank=True, null=True)
     def __str__(self):
-        return f'{self.title} Policy' 
+        return f'{self.name} Policy' 
     
     class Meta:
         verbose_name_plural = 'Policies'
